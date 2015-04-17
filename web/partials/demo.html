@@ -1,16 +1,31 @@
 <!--  partials/demo.html  -->
-<h1>DEMO.HTML</h1>
+<h5>demo.html</h5>
 
-Search: <input ng-model="query">
+<!-- Search: <input ng-model="query">
 Sort by:
 <select ng-model="orderProp">
   <option value="name">Alphabetical</option>
   <option value="age">Newest</option>
 </select>
 
-<ul class="phones">
-  <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
-    <span>{{phone.name}}</span>
-    <p>{{phone.snippet}}</p>
-  </li>
+ | filter:query | orderBy:orderProp
+
+ -->
+
+<table>
+    <thead>
+        <th>Created at</th>
+        <th>Amount</th>
+        <th>Description</th>
+        <th>Comment</th>
+    </thead>
+    <tbody>
+    <tr ng-repeat="line in expenseLines">
+        <td>{{line.created_at|date }}</td>
+        <td>{{line.amount|currency}}</td>
+        <td>{{line.description }}</td>
+        <td>{{line.comment }}</td>
+    </tr>
+    </tbody>
+</table>
 </ul>

@@ -24,9 +24,12 @@ expensesApp.config(['$routeProvider',
   }]);
 
 expensesApp.controller('ExpensesCtrl', ['$scope', '$http', function ($scope, $http) {
+  $scope.phones = [];
+  $scope.expenseLines = [];  
 
-  $http.get('/api/v1/demo/expenses.json').success(function(data) {
-    $scope.phones = data;
+  //$http.get('/api/v1/demo/expenses.json').success(function(data) {
+  $http.get('/api/v1/expenselines/1.json').success(function(data) {
+    $scope.expenseLines = [ data ];
   });
 
   $scope.orderProp = 'age';
