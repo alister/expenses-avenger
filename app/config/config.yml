@@ -75,5 +75,13 @@ swiftmailer:
 fos_rest:
     routing_loader:
         default_format: json
+    exception:
+        enabled: true
+        #exception_controller: 'AppBundle\Controller\ApiController::ExceptionAction'
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        # messages:
+        #     'Acme\HelloBundle\Exception\MyExceptionWithASafeMessage': true
 
 nelmio_api_doc: ~
