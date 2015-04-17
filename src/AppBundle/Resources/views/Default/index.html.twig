@@ -1,12 +1,43 @@
 {% extends 'AppBundle::base.html.twig' %}
 
 {% block body %}
-    <h1>Homepage.</h1>
+<div class="container">
+    <section id="page-top">
+      <div class="page-header">
+        <h1>Expenses - demo app by Alister Bulman</h1>
+        <p class="lead">ABOUT and CONTACT details</p>
+      </div>
+    </section>
 
-<ul>
-    <li><a href="{{ path('homepage') }}">Home</a></li>
-    <li><a href="{{ path('nelmio_api_doc_index') }}">api docs</a></li>
-    <li><a href="{{ path('get_spike', {'_format': 'json'}) }}">api/v1/spike test API call</a></li>
+    {# <div class="row">
+        <div class="span4">
+            <ul><li><a href="{{ path('homepage') }}">Home</a></li>
+                <li><a href="{{ path('nelmio_api_doc_index') }}">api docs</a></li>
+                <li><a href="{{ path('get_spike', {'_format': 'json'}) }}">api/v1/spike test API call</a></li>
+            </ul>
+        </div>
+    </div> #}
 
-</ul>
+ <div class="row">
+    <div class="span12">
+
+    <h2>Todo</h2>
+    <div ng-controller="TodoListController as todoList">
+      <span>{{'{{todoList.remaining()}}'}} of {{'{{todoList.todos.length}}'}} remaining</span>
+      [ <a href="" ng-click="todoList.archive()">archive</a> ]
+      <ul class="unstyled">
+        <li ng-repeat="todo in todoList.todos">
+          <input type="checkbox" ng-model="todo.done">
+          <span class="done-{{'{{todo.done}}'}}">{{'{{todo.text}}'}}</span>
+        </li>
+      </ul>
+      <form ng-submit="todoList.addTodo()">
+        <input type="text" ng-model="todoList.todoText" size="30">   {# placeholder="add new todo here" #}
+        <input class="btn-primary" type="submit" value="add">
+      </form>
+    </div>
+
+</div></div>
+
+</div><!-- /.container -->
 {% endblock %}

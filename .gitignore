@@ -14,8 +14,12 @@
 # build artifacts
 cache.properties
 build/
+web/css/
+web/js/
+
 b
 bp
+
 
 # database used for testing / demo-deployment
 app/expenses.db3
