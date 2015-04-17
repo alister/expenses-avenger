@@ -1,0 +1,12 @@
+{% extends 'AppBundle::base.html.twig' %}
+
+{% block body %}
+    <h1>Homepage.</h1>
+
+<ul>
+    <li><a href="{{ path('homepage') }}">Home</a></li>
+    <li><a href="{{ path('nelmio_api_doc_index') }}">api docs</a></li>
+    <li><a href="{{ path('get_spike', {'_format': 'json'}) }}">api/v1/spike test API call</a></li>
+
+</ul>
+{% endblock %}

@@ -1,11 +1,11 @@
-# app:
-#     resource: "@AppBundle/Controller/DefaultController.php"
-#     type:     annotation
+app:
+     resource: "@AppBundle/Controller/DefaultController.php"
+     type:     annotation
 
 api:
     type:     rest
     resource: AppBundle\Controller\ApiController
-    prefix:   /api
+    prefix:   /api/v1
 
 #"@AppBundle/Controller/ApiController.php"
 
