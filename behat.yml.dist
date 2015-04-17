@@ -1,0 +1,71 @@
+# behat.yml.dist
+default:
+    suites:
+        # wip:
+        #    paths: [ "%paths.base%/features" ]
+        #    filters:
+        #        tags: @wip
+        api:
+           paths: [ "%paths.base%/features/api" ]
+           contexts:
+                - ApiContext:
+                    - %mink.base_url%
+        #users_registration:
+
+    extensions:
+        Behat\Symfony2Extension:
+            kernel:
+                env: test
+                debug: true
+        Behat\MinkExtension:
+            # base_url is available elsewhere as %mink.base_url%
+            base_url:           http://nas.abulman.co.uk:8000
+            sessions:
+                default:
+                    symfony2: ~
+                goutte:
+                    goutte: ~
+
+    # behat --suite 'api'               run features or scenarios which have either the @orm or the @database tag.
+    # behat --tags '@orm,@database'     run features or scenarios which have either the @orm or the @database tag.
+    # behat --tags 'ticket,723'         run features or scenarios which have either the @ticket or the @723 tag
+    # behat --tags '@orm&&@fixtures'    run features or scenarios with both the @orm and the @fixtures tags
+    # behat --tags '~@javascript'       run all features or scenarios *except* those marked with @javascript tag. (~:excluding)
+    # behat --name 'number has'         run features & scenarios that contain 'number has' in their title
+    gherkin:
+        filters:
+            # Do *not* run items marked as @wip, @skip or @live
+            tags: "~@wip&&~@skip&&~@live"
+
+    formatters:
+        pretty: false
+        progress: true
+
+## Profiles
+ 
+# behat --profile=ci
+# Overrides for a plain, simple (but complete) output
+ci:
+    formatters:
+        pretty: false
+        progress: true
+    gherkin:
+        filters:
+            # WILL run scenarios marked as '@skip' and '@live'
+            tags: "~@wip"
+
+# Run all the tests marked @smoketest
+smoketest:
+    formatters:
+        pretty: false
+        progress: true
+    gherkin:
+        filters:
+            tags: "@smoketest"
+
+# very verbose
+pretty:
+    # everything else should be as "profile: default"
+    formatters:
+        pretty: true
+        progress: false
