@@ -17,7 +17,7 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
 {
     use KernelDictionary;
     use Traits\LiveSites;
-    use Traits\JsonSites;
+    use Traits\Api;
     use Traits\SpikeApi;
 
     /**

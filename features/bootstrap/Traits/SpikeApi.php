@@ -8,7 +8,7 @@ trait SpikeApi
     /**
      * @Then the SpikeApi application name should be :name
      */
-    public function theSpikeTestApiApplicationNameShouldBeExpenses($name)
+    public function theSpikeTestApiApplicationNameShouldBe($name)
     {
         $data = json_decode($this->response);
         $actual = $data->appname;
