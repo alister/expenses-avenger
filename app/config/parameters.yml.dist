@@ -1,11 +1,28 @@
 # This file is a "template" of what your parameters.yml file should look like
+# Normally, the parameters.yml file will be put into place on the live server by 
+# configuration management - 
+# OR it will use Environment Variables, set in the Apache host, or elsewhere
+# 
+# eg:
+#  SetEnv SYMFONY__DATABASE__PATH "/srv/site/expenses/data/expenses.db3"
+# 
+# See: http://symfony.com/doc/current/cookbook/configuration/external_parameters.html
 parameters:
-    database_driver:   pdo_mysql
-    database_host:     127.0.0.1
-    database_port:     ~
-    database_name:     symfony
-    database_user:     root
-    database_password: ~
+    database_driver: pdo_sqlite
+    database_host: localhost
+    database_port: null
+    database_name: expenses.db3
+    database_path: "%kernel.root_dir%/expenses.db3"
+    database_user: root
+    database_password: null
+
+    # see above
+    # database_driver:   pdo_mysql
+    # database_host:     127.0.0.1
+    # database_port:     ~
+    # database_name:     symfony
+    # database_user:     root
+    # database_password: ~
     # You should uncomment this if you want use pdo_sqlite
     # database_path: "%kernel.root_dir%/data.db3"
 
