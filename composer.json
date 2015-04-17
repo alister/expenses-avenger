@@ -20,10 +20,11 @@
         ,"symfony/monolog-bundle": "~2.4"
         ,"sensio/distribution-bundle": "~3.0,>=3.0.12"
         ,"sensio/framework-extra-bundle": "~3.0,>=3.0.2"
-        ,"incenteev/composer-parameter-handler": "~2.0",
-        "friendsofsymfony/rest-bundle": "~1.5",
-        "jms/serializer-bundle": "0.13.*",
-        "nelmio/api-doc-bundle": "~2.8"
+        ,"incenteev/composer-parameter-handler": "~2.0"
+        ,"friendsofsymfony/rest-bundle": "~1.5"
+        ,"jms/serializer-bundle": "0.13.*"
+        ,"nelmio/api-doc-bundle": "~2.8"
+        ,"gedmo/doctrine-extensions": "dev-master"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*"
@@ -41,8 +42,8 @@
         ,"behat/mink-goutte-driver": "~1.1"
         ,"sensio/generator-bundle": "~2.5"
         ,"johnkary/phpunit-speedtrap": "dev-master"
-        ,"mybuilder/phpunit-accelerator": "~1.0",
-        "behat/mink-browserkit-driver": "~1.2"
+        ,"mybuilder/phpunit-accelerator": "~1.0"
+        ,"behat/mink-browserkit-driver": "~1.2"
     },
     "scripts": {
         "post-root-package-install": [
