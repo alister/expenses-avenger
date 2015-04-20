@@ -8,7 +8,10 @@ api:
     prefix:   /api/v1
 
 #"@AppBundle/Controller/ApiController.php"
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
+

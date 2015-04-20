@@ -1,16 +1,19 @@
 <?php
 namespace AppBundle\Entity;
 
-use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\ExclusionPolicy;
+use JMS\Serializer\Annotation\Expose;
 
 /**
- * ExpenseLine
+ * Expense - one line of expenses for a (connected) user
  *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="AppBundle\Entity\ExpenseLineRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\ExpenseRepository")
+ * @ORM\Table(name="expenses")
+ *
+ * @ExclusionPolicy("all")
  */
-class ExpenseLine
+class Expense
 {
     /**
      * @var integer
@@ -18,14 +21,30 @@ class ExpenseLine
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Expose
      */
     private $id;
 
     /**
-     * Hook timestampable behavior
-     * updates createdAt, updatedAt fields
+     * Bidirectional - Many Expenses are owned by one user (OWNING SIDE)
+     * 
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="expensesOwned")
+     *
+     * @Expose
      */
-    use TimestampableEntity;
+    private $user;
+
+    /**
+     * Date of expense (input by user, default to today)
+     * 
+     * @var \DateTime
+     *
+     * @ORM\Column(name="when", type="datetime")
+     */
+    private $when;
 
     /**
      * @var string
@@ -48,13 +67,7 @@ class ExpenseLine
      */
     private $comment;
 
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="user", type="bigint")
-     */
-    private $user;
-
+    // =================================================================
 
     /**
      * Get id
@@ -67,6 +80,51 @@ class ExpenseLine
     }
 
     /**
+     * Set user
+     *
+     * @param string $user
+     * @return Expenses
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return string 
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    // {{{ primary data stored
+
+    /**
+     * Set date of expense
+     *
+     * @param datetime $when
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
+        return $this;
+    }
+
+    /**
+     * Get date of expense
+     *
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
      * Set description
      *
      * @param string $description
@@ -75,7 +133,6 @@ class ExpenseLine
     public function setDescription($description)
     {
         $this->description = $description;
-
         return $this;
     }
 
@@ -92,13 +149,15 @@ class ExpenseLine
     /**
      * Set amount
      *
+     * To avoid problems with floats, we store it in the model as a string
+     * and then it's co-erced as required. In the DB it's a DECIMAL
+     * 
      * @param string $amount
      * @return ExpenseLine
      */
     public function setAmount($amount)
     {
         $this->amount = $amount;
-
         return $this;
     }
 
@@ -121,7 +180,6 @@ class ExpenseLine
     public function setComment($comment)
     {
         $this->comment = $comment;
-
         return $this;
     }
 
@@ -135,26 +193,9 @@ class ExpenseLine
         return $this->comment;
     }
 
-    /**
-     * Set user
-     *
-     * @param User $user
-     * @return ExpenseLine
-     */
-    public function setUser($user)
-    {
-        $this->user = $user;
+    // }}}
 
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
+    // if setWhen / getWhen are put here, remove them - we prefer getDate/setDate
+    // but don't want to have a field just called 'date'
+    // (it is about avoiding a reserved name for a field)
 }
