@@ -1,5 +1,13 @@
 /* expensesApp */
-
 option,input {
     color: black;
+}
+
+// from http://getbootstrap.com/examples/navbar-static-top/navbar-static-top.css
+body {
+  min-height: 2000px;
+}
+
+.navbar-static-top {
+  margin-bottom: 19px;
 }

@@ -1,18 +1,26 @@
-<nav class="navbar navbar-default fixed-top" role="navigation">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-        <button type="button" class="navbar-toggle"
-                data-toggle="collapse" data-target=".navbar-ex1-collapse">
+<!-- Fixed navbar -->
+<nav class="navbar navbar-default navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" href="/">Expenses, by Alister Bulman</a>
+            </button>
+            <a class="navbar-brand" href="#home">Expenses, <small>by <strong>Alister Bulman</strong></small></a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#home">Home</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                {% if debug is defined and debug %}
+                    <li><a href="{{ path('nelmio_api_doc_index') }}" title="not within Angular">API docs</a></li>
+                {% endif %}
+                <li><a href="#about">About</a></li>
+                <li><a href="#alister">Alister</a></li>
+            </ul>
+        </div><!--/.nav-collapse -->
     </div>
-
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse navbar-ex1-collapse">
-        {# {{ knp_menu_render('AppBundle:Builder:mainMenu', { 'style': 'navbar-right' }) }} #}
-    </div><!-- /.navbar-collapse -->
 </nav>

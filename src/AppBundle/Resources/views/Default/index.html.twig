@@ -2,27 +2,11 @@
 
 {% block body %}
 <div class="container">
-    <section id="page-top">
-      <div class="page-header">
-        <h1>Expenses - demo app by Alister Bulman</h1>
-        <p class="lead">ABOUT and CONTACT details</p>
-      </div>
-    </section>
-
-    {# <div class="row">
-        <div class="span4">
-            <ul><li><a href="{{ path('homepage') }}">Home</a></li>
-                <li><a href="{{ path('nelmio_api_doc_index') }}">api docs</a></li>
-                <li><a href="{{ path('get_spike', {'_format': 'json'}) }}">api/v1/spike test API call</a></li>
-            </ul>
+    <div class="row">
+        <div class="span12" ng-controller="ExpensesCtrl">
+            <ng-view></ng-view>
         </div>
-    </div> #}
-
-<div class="row">
-    <div class="span12" ng-controller="ExpensesCtrl">
-        <ng-view></ng-view>
     </div>
-</div>
 
 </div><!-- /.container -->
 {% endblock %}

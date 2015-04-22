@@ -12,6 +12,14 @@ expensesApp.config(['$routeProvider',
         controller: 'ExpensesCtrl',
         controllerAs: 'expenses'
       }).
+      when('/about', {
+        templateUrl: '/partials/about.html',
+        //controller: 'PhoneDetailCtrl'
+      }).
+      when('/alister', {
+        templateUrl: '/partials/alister.html',
+        //controller: 'PhoneDetailCtrl'
+      }).
       // when('/expenses/:phoneId', {
       //   templateUrl: 'partials/phone-detail.html',
       //   controller: 'PhoneDetailCtrl'
@@ -24,26 +32,12 @@ expensesApp.config(['$routeProvider',
   }]);
 
 expensesApp.controller('ExpensesCtrl', ['$scope', '$http', function ($scope, $http) {
-  $scope.phones = [];
-  $scope.expenseLines = [];  
+    $scope.expenses = [];
 
-  //$http.get('/api/v1/demo/expenses.json').success(function(data) {
-  $http.get('/api/v1/expenselines/1.json').success(function(data) {
-    $scope.expenseLines = [ data ];
-  });
+    //$http.get('/api/v1/demo/expenses.json').success(function(data) {
+    $http.get('/api/v1/expenses.json').success(function(data) {
+        $scope.expenses = data.expenses;
+    });
 
-  $scope.orderProp = 'age';
+    $scope.orderProp = 'created_at';
 }]);
- 
-  //   todoList.addTodo = function() {
-  //     todoList.todos.push({text:todoList.todoText, done:false});
-  //     todoList.todoText = '';
-  //   };
- 
-  //   todoList.remaining = function() {
-  //     var count = 0;
-  //     angular.forEach(todoList.todos, function(todo) {
-  //       count += todo.done ? 0 : 1;
-  //     });
-  //     return count;
-  //   };
