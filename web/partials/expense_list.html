@@ -23,11 +23,13 @@ Sort by:
 
     <tbody>
         <tr>
-            <td><input class="form-control" type="date"   ng-model="line.created_at"  required></td>
-            <td><input class="form-control" type="number" ng-model="line.amount"      required></td>
-            <td><input class="form-control" type="text"   ng-model="line.description" required></td>
-            <td><input class="form-control" type="text"   ng-model="line.comment"             ></td>
-            <td>add</td>
+        <form class="form-horizontal" role="form" ng-submit="addExpense()">
+            <td><input id="created_at"  class="form-control" type="date"   ng-model="line.created_at"  required></td>
+            <td><input id="amount"      class="form-control" type="number" ng-model="line.amount"      required></td>
+            <td><input id="description" class="form-control" type="text"   ng-model="line.description" required></td>
+            <td><input id="comment"     class="form-control" type="text"   ng-model="line.comment"             ></td>
+            <td><input type="submit"    class="btn btn-primary btn-xs" value="Add"/></td>
+        </form>
         </tr>
         <tr ng-repeat="line in expenses">
             <!-- @todo http://angular-ui.github.io/bootstrap/ datepicker popup for edit -->

@@ -1,6 +1,6 @@
 /* expenses.js */
 
-var expensesApp = angular.module('expensesApp', [ 'ngRoute', 'ngTable' ]);
+var expensesApp = angular.module('expensesApp', [ 'ngRoute', 'ngTable', 'ngResource' ]);
 expensesApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
@@ -24,7 +24,13 @@ expensesApp.config(['$routeProvider',
 
 expensesApp.controller('ExpensesCtrl', ['$scope', '$http', function ($scope, $http) {
     $scope.expenses = [];
+    // initial fetch
     $http.get('/api/v1/expenses.json').success(function(data) {
         $scope.expenses = data.expenses;
     });
+    $scope.addExpense = function() { //create a new expense. Issues a POST to /api/expenses
+      $scope.expense.$save(function() {
+          $state.go('expenses'); // on success go back to home i.e. expenses state.
+      });
+    };
 }]);
