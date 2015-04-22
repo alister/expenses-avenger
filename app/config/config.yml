@@ -73,16 +73,41 @@ swiftmailer:
     spool:     { type: memory }
 
 fos_rest:
+    param_fetcher_listener: true
+    view:
+        view_response_listener: 'force'
+        formats:
+            xml:  true
+            json: true
+        templating_formats:
+            html: true
     routing_loader:
         default_format: json
+    format_listener:
+        rules:
+            - { path: ^/, priorities: [ html, json, xml ], fallback_format: ~, prefer_extension: true }
     exception:
         enabled: true
         #exception_controller: 'AppBundle\Controller\ApiController::ExceptionAction'
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
-        # messages:
-        #     'Acme\HelloBundle\Exception\MyExceptionWithASafeMessage': true
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
+    allowed_methods_listener: true
+    access_denied_listener:
+        json: true
+    body_listener: true
+    disable_csrf_role: ROLE_API
+
+jms_serializer:
+    metadata:
+        debug: true
+        auto_detection: true
+        directories:
+            FOSUserBundle:
+                namespace_prefix: FOS\UserBundle
+                path: %kernel.root_dir%/config/serializer/FOSUB
 
 nelmio_api_doc: ~
 

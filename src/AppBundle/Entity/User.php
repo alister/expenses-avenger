@@ -1,19 +1,21 @@
 <?php
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Expense;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
+#use JMS\Serializer\Annotation as Serializer;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\ExecutionContextInterface;
-use \AppBundle\Entity\Expense;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="fos_user")
  * 
- * @ExclusionPolicy("all")
+ * @-Serializer\ExclusionPolicy("all")
+ * @-Serializer\XmlRoot("expenses")
  */
 class User extends BaseUser
 {
@@ -23,32 +25,21 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\OneToOne(targetEntity="contractor", mappedBy="user", cascade={"persist"})
      * 
-     * @Expose
+     * @-Serializer\Expose
      */
     protected $id;
 
     /**
-     * Override FOS\UserBundle\Model\User as BaseUser; for username validation
-     * and being able to expose to the API
-     *
-     * @var string
-     *
-     * @Assert\Length(
-     *      min = 3,
-     *      max = 20,
-     *      minMessage = "Your username must be at least {{ limit }} characters long",
-     *      maxMessage = "Your username cannot be longer than {{ limit }} characters long"
-     * )
-     * 
-     * @Expose
+     * @var AppBundle\Entity\Expense[] description
+     * @ORM\OneToMany(targetEntity="Expense", mappedBy="user",cascade={"persist"})
      */
-    protected $username;
+    protected $expensesOwned;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Expense", inversedBy="user")
-     * @ORM\JoinColumn(name="expense_id", referencedColumnName="id")
-     */
-    protected $expenses;
+    public function __construct()
+    {
+        $this->expenses = array();
+        parent::__construct();
+    }
 
     public function setId($id)
     {
@@ -68,16 +59,34 @@ class User extends BaseUser
 
     public function addExpense(Expense $expense)
     {
-        $this->expenses[] = $expense;
-    }                  
+        if (!$this->getExpenses()->contains($expense)) {
+            $this->getExpenses()->add($expense);
+        }
+    }
+
+    public function removeCategory(Expense $expense)
+    {
+        if ($this->getExpenses()->contains($expense))
+            $this->getExpenses()->remove($expense);
+    }
 
     /**
      * Get the array of expenses
      *
-     * @return array \AppBundle\Entity\Expense
+     * @return Collection
      */
     public function getExpenses()
     {
-        return $this->expenses;
+        return $this->expensesOwned ?: $this->expensesOwned = new ArrayCollection();
+    }
+
+    /**
+     * Remove expenses
+     *
+     * @param \AppBundle\Entity\Expense $expenses
+     */
+    public function removeExpense(\AppBundle\Entity\Expense $expenses)
+    {
+        $this->expensesOwned->removeElement($expenses);
     }
 }

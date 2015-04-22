@@ -12,8 +12,38 @@ use AppBundle\Entity\Expense;
  */
 class ExpenseRepository extends EntityRepository
 {
-    public function fetchByDateDesc(\DateTime $startDate, \DateTime $endDate)
+    public function save(Expense $expense)
     {
-        return [];
+        $this->_em->persist($expense);
+        $this->_em->flush();
+    }
+
+    public function remove(Expense $expense)
+    {
+        $this->_em->remove($expense);
+        $this->_em->flush();
+    }
+
+    public function fetchByDate(User $user, \DateTime $startDate, \DateTime $endDate, $order = 'DESC')
+    {
+        $order = strtoupper($order);
+        // verify the only values allowed
+        if (! in_array($order, ['ASC', 'DESC'])) {
+            $order = 'DESC';
+        }
+        return $this->getEntityManager()->createQuery(
+                'SELECT e
+                FROM AppBundle:Expense e
+                WHERE 
+                    e.user = :user AND 
+                    e.createdAt >= :startCreatedAt AND 
+                    e.createdAt <= :endCreatedAt
+                ORDER BY e.createdAt ' . $order
+            )
+            ->setParameter('user', $user)
+            ->setParameter('startCreatedAt', $startDate)
+            ->setParameter('endCreatedAt', $endDate)
+            //#->setParameter('orderBy', $order)
+            ->getResult();
     }
 }

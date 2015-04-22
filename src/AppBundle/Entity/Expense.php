@@ -2,8 +2,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation\ExclusionPolicy;
-use JMS\Serializer\Annotation\Expose;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Expense - one line of expenses for a (connected) user
@@ -11,7 +10,8 @@ use JMS\Serializer\Annotation\Expose;
  * @ORM\Entity(repositoryClass="AppBundle\Entity\ExpenseRepository")
  * @ORM\Table(name="expenses")
  *
- * @ExclusionPolicy("all")
+ * @Serializer\ExclusionPolicy("all")
+ * @Serializer\XmlRoot("expense")
  */
 class Expense
 {
@@ -22,7 +22,7 @@ class Expense
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Expose
+     * @Serializer\Expose
      */
     private $id;
 
@@ -33,7 +33,7 @@ class Expense
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="expensesOwned")
      *
-     * @Expose
+     * @Serializer\Expose
      */
     private $user;
 
@@ -42,14 +42,16 @@ class Expense
      * 
      * @var \DateTime
      *
-     * @ORM\Column(name="when", type="datetime")
+     * @ORM\Column(name="createdAt", type="datetime")
+     * @Serializer\Expose
      */
-    private $when;
+    private $createdAt;
 
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=255)
+     * @Serializer\Expose
      */
     private $description;
 
@@ -57,6 +59,7 @@ class Expense
      * @var string
      *
      * @ORM\Column(name="amount", type="decimal")
+     * @Serializer\Expose
      */
     private $amount;
 
@@ -64,18 +67,33 @@ class Expense
      * @var string
      *
      * @ORM\Column(name="comment", type="text")
+     * @Serializer\Expose
      */
     private $comment;
 
     // =================================================================
 
+
     /**
-     * Get id
+     * default the createdAt to {NOW}
+     */
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
+    /**
+     * Get id of this expense (unique amongst all lines)
      *
      * @return integer 
      */
     public function getId()
     {
+        return $this->id;
+    }
+    public function setId($id)
+    {
+        $this->id = $id;;
         return $this->id;
     }
 
@@ -104,24 +122,26 @@ class Expense
     // {{{ primary data stored
 
     /**
-     * Set date of expense
+     * Set createdAt
      *
-     * @param datetime $when
+     * @param \DateTime $createdAt
+     * @return Expense
      */
-    public function setDate(\DateTime $date)
+    public function setcreatedAt($createdAt)
     {
-        $this->date = $date;
+        $this->createdAt = $createdAt;
+
         return $this;
     }
 
     /**
-     * Get date of expense
+     * Get createdAt
      *
-     * @return \DateTime
+     * @return \DateTime 
      */
-    public function getDate()
+    public function getcreatedAt()
     {
-        return $this->date;
+        return $this->createdAt;
     }
 
     /**
@@ -195,7 +215,4 @@ class Expense
 
     // }}}
 
-    // if setWhen / getWhen are put here, remove them - we prefer getDate/setDate
-    // but don't want to have a field just called 'date'
-    // (it is about avoiding a reserved name for a field)
 }

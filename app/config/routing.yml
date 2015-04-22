@@ -2,9 +2,13 @@ app:
      resource: "@AppBundle/Controller/DefaultController.php"
      type:     annotation
 
+# api:
+#     type:     rest
+#     resource: AppBundle\Controller\ApiController
+#     prefix:   /api/v1
 api:
     type:     rest
-    resource: AppBundle\Controller\ApiController
+    resource: AppBundle\Controller\ExpenseController
     prefix:   /api/v1
 
 #"@AppBundle/Controller/ApiController.php"
@@ -14,4 +18,3 @@ fos_user:
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
-

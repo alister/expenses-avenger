@@ -1,9 +1,33 @@
 # Learn more about services, parameters and containers at
 # http://symfony.com/doc/current/book/service_container.html
 parameters:
+    app.repository.expense.class: AppBundle\Entity\ExpenseRepository
 #    parameter_name: value
 
 services:
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+    app.expense_manager:
+        class: 'AppBundle\ExpenseManager'
+        arguments:
+            - @app.repository.expense
+
+    ## Doctrine repositories
+    app.repository.expense:
+        class: "%app.repository.expense.class%"
+        factory_service: doctrine
+        factory_method: getRepository
+        arguments:
+            - AppBundle\Entity\Expense
+        #calls:
+        #    - [setContainer, [@service_container]]
+
+    #service_name:
+    #    class: AppBundle\Directory\ClassName
+    #    arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    # <service id="app.listener" class="AppBundle\EventListener\ControllerListener">
+    #     <tag name="kernel.event_listener" event="kernel.controller" method="onKernelController" />
+    #     <argument type="service" id="twig.extension.app" />
+    # <service id="twig.extension.app" class="AppBundle\Twig\Extension\DemoExtension" public="false">
+    #     <tag name="twig.extension" />
+    #     <argument type="service" id="twig.loader" />
+    # </service>

@@ -1,0 +1,15 @@
+# %kernel.root_dir%/app/config/serializer/FOSUB/Model.User.yml
+FOS\UserBundle\Model\User:
+    access_type: property
+    exclusion_policy: ALL
+    xml_root_name: user
+    properties:
+        username:
+            type:     string
+            expose:   true
+        email:
+            expose:   false
+            exclude:  true
+        plainPassword:
+            expose:   false
+            exclude:  true
