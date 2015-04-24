@@ -1,30 +1,30 @@
 {% extends "AppBundle::layout.html.twig" %}
 
-{% block title "Symfony - Notes" %}
+{% block title "Expenses" %}
 
 {% block content_header '' %}
 
 {% block content %}
-    <h1 class="title">{{ 'note.list.headline'|trans({}, 'AppBundle') }}</h1>
-
-    <p>
-        {# {{ 'note.offset'|trans({}, 'AppBundle') }}: {{ data.offset ?: '-' }}, {{ 'note.limit'|trans({}, 'AppBundle') }}: {{ data.limit }} #}
-    </p>
+    <h1 class="title">Expenses</h1>
 
     <ul id="note-list">
+        <table class="table table-hover table-row">
         {% for id, expense in data.expenses %}
-        <li>
-            <a href="{{ path('get_expense', {'id': id}) }}">{{ dump(expense) }}</a>
-            [<a href="{{ path('edit_expenses', {'id': id}) }}">{{ 'note.edit.link'|trans({}, 'AppBundle') }}</a>]
-            [<a href="{{ path('remove_expenses', {'id': id}) }}">{{ 'note.remove.link'|trans({}, 'AppBundle') }}</a>]
-        </li>
+            <tr><td>{{ expense.createdAt|date }}</td>
+                <td>$ {{ expense.amount|number_format(2) }}</td>
+                <td>{{ expense.description }}</td>
+                <td>{{ expense.comment }}</td>
+ 
+                <td><a href="{{ path('get_expense', {'id': expense.id}) }}">Show</a>
+                    [<a href="{{ path('edit_expense', {'id': expense.id}) }}">edit</a>]
+                    [<a href="{{ path('remove_expense', {'id': expense.id}) }}">remove</a>]</td>
+            </tr>
         {% else %}
-        <li>{{ 'note.list.empty'|trans({}, 'AppBundle') }}</li>
+            <tr><td>None available</td></tr>
         {% endfor %}
+        </table>
     </ul>
     <p>
-        <a href="{{ path('new_expense') }}">{{ 'note.new.link'|trans({}, 'AppBundle') }}</a>
+        <a href="{{ path('new_expense') }}">Add a new expense</a>
     </p>
 {% endblock %}
-
-{% set code = code(_self) %}

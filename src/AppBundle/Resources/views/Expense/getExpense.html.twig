@@ -1,18 +1,22 @@
 {% extends "AppBundle::layout.html.twig" %}
 
-{% block title "Symfony - Note" %}
+{% block title "Expenses" %}
 
 {% block content_header '' %}
 
 {% block content %}
-    <h1 class="title">Note #{{ id }}</h1>
+    <h1 class="title">Expense #{{ id }}</h1>
 
-    <p>{{ dump(expense) }}</p>
+    <div class="row">
+        <p><strong>Date:</strong> {{ expense.createdAt|date }}<br>
+            <strong>Amount:</strong> ${{ expense.amount|number_format(2) }}<br>
+            <strong>Description:</strong> {{ expense.description }}<br>
+            <strong>Comment:</strong> {{ expense.comment }}</p>
+    </div>
+
     <p>
-        <a href="{{ path('get_expenses') }}">{{ 'note.list.link'|trans({}, 'AppBundle') }}</a> <br>
-        [<a href="{{ path('remove_expenses', {'id': id}) }}">{{ 'note.remove.link'|trans({}, 'AppBundle') }}</a>]
-        [<a href="{{ path('edit_expenses', {'id': id}) }}">{{ 'note.edit.link'|trans({}, 'AppBundle') }}</a>]
+        <a href="{{ path('get_expenses') }}">List all expenses</a> <br>
+        [<a href="{{ path('remove_expense', {'id': id}) }}">Delete expense</a>]
+        [<a href="{{ path('edit_expense', {'id': id}) }}">Edit</a>]
     </p>
 {% endblock %}
-
-{% set code = code(_self) %}
