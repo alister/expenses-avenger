@@ -9,9 +9,9 @@
 >
     <testsuites>
         <testsuite name="Project Test Suite">
-            <directory>../src/*/*Bundle/Tests</directory>
-            <directory>../src/*/Bundle/*Bundle/Tests</directory>
-            <directory>../src/*Bundle/Tests</directory>
+            <!-- <directory>../src/App/*Bundle/Tests</directory>
+            <directory>../src/App/Bundle/*Bundle/Tests</directory> -->
+            <directory>../src/AppBundle/Tests</directory>
         </testsuite>
     </testsuites>
 
@@ -22,6 +22,11 @@
     -->
 
     <filter>
+        <blacklist>
+            <directory>./build/</directory>
+            <directory>./tests/</directory>
+            <directory>./vendor/</directory>
+        </blacklist>
         <whitelist>
             <directory>../src</directory>
             <exclude>
