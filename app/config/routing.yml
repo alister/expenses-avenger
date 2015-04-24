@@ -1,20 +1,32 @@
-app:
-     resource: "@AppBundle/Controller/DefaultController.php"
-     type:     annotation
+# When F5 in the Angular app at /expenses, 
+expense:
+    path: /expenses
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    "::index.html.twig"
 
-# api:
-#     type:     rest
-#     resource: AppBundle\Controller\ApiController
-#     prefix:   /api/v1
 api:
     type:     rest
     resource: AppBundle\Controller\ExpenseController
     prefix:   /api/v1
 
-#"@AppBundle/Controller/ApiController.php"
-fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+# #"@AppBundle/Controller/ApiController.php"
+# fos_user:
+#     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
 
 NelmioApiDocBundle:
     resource: "@NelmioApiDocBundle/Resources/config/routing.yml"
     prefix:   /api/doc
+
+# This will also catch everything else
+app_blah:
+    path: /{stuff}
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    "::index.html.twig"
+# and finally, the generic home page
+app:
+    path: /
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    "::index.html.twig"
