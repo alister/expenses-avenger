@@ -120,10 +120,9 @@ class ExpenseController extends FOSRestController
     public function getExpenseAction(Request $request, $id)
     {
         $expense = $this->getExpenseManager()->get($id);
-        if (false === $expense) {
+        if (!$expense) {
             throw $this->createNotFoundException("Expense does not exist.");
         }
-        //#dump($expense);die;
 
         $view = new View($expense);
         $group = $this->container->get('security.context')->isGranted('ROLE_API') ? 'restapi' : 'standard';
