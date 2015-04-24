@@ -1,12 +1,22 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
+
+/**
+ * ExpenseCollection
+ *
+ * @Serializer\ExclusionPolicy("all")
+ * @-Serializer\XmlRoot("expenseCollection")
+ */
 class ExpenseCollection
 {
     /**
      * @var Expense[]
+     * @Serializer\Expose
      */
-    public $expenses;
+    private $expenses;
 
     /**
      * @var integer

@@ -6,10 +6,10 @@ FOS\UserBundle\Model\User:
     properties:
         username:
             type:     string
-            expose:   true
+            expose:   false
         email:
             expose:   false
-            exclude:  true
+            exclude:  false
         plainPassword:
             expose:   false
-            exclude:  true
+            exclude:  false

@@ -30,6 +30,7 @@ class ExpenseManager
             $start
         );
 
+        return $expensesOrdered;
         $expenses = array();
         foreach($expensesOrdered as $exp) {
             $expenses[$exp->getId()] = $exp;

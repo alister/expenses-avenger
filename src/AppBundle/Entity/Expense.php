@@ -12,6 +12,7 @@ use JMS\Serializer\Annotation as Serializer;
  *
  * @Serializer\ExclusionPolicy("all")
  * @Serializer\XmlRoot("expense")
+ * @Serializer\AccessType("public_method")
  */
 class Expense
 {
@@ -33,7 +34,7 @@ class Expense
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="expensesOwned")
      *
-     * @Serializer\Expose
+     * @-Serializer\Expose
      */
     private $user;
 
@@ -44,6 +45,7 @@ class Expense
      *
      * @ORM\Column(name="createdAt", type="datetime")
      * @Serializer\Expose
+     * @Serializer\Type("DateTime<'Y-m-d'>")
      */
     private $createdAt;
 
@@ -127,10 +129,13 @@ class Expense
      * @param \DateTime $createdAt
      * @return Expense
      */
-    public function setcreatedAt($createdAt)
+    public function setCreatedAt($createdAt)
     {
+        if (! $createdAt instanceof \DateTime) {
+            $createdAt = new \DateTime($createdAt);
+        }
+        //dump($createdAt);
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
