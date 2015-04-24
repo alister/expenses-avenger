@@ -60,7 +60,15 @@ class Expense
     /**
      * @var string
      *
-     * @ORM\Column(name="amount", type="decimal")
+     * a bit of a hack here - SQLite doesn't have a DECIMAL type, so it stores
+     * it as a float - which is way too easy to drift with accuracy problems
+     * 
+     * So, we'll store it here as a string, as coerce it as required when 
+     * we come to add things up.
+     * 
+     * Again, MySQL shouldn't have the problem.
+     * 
+     * @ORM\Column(name="amount", type="string")
      * @Serializer\Expose
      */
     private $amount;
