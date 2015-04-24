@@ -5,7 +5,6 @@ angular.module('ExpensesApp')
         $scope.fields = ['created_at', 'amount', 'description', 'comment'].concat(options.displayed_fields);
         $scope.fieldNames = ['Date', 'Amount', 'Description', 'Comment'].concat(options.displayed_fields);
 
-        console.log(8);
         $scope.sort = function (field) {
             $scope.sort.field = field;
             $scope.sort.order = !$scope.sort.order;
@@ -14,7 +13,6 @@ angular.module('ExpensesApp')
         $scope.sort.field = 'created_at';
         $scope.sort.order = false;
 
-        console.log(17);
         $scope.show = function (id) {
             //redirectTo: '/expenses' + id;
             $location.url('/expense/' + id);
@@ -47,7 +45,6 @@ angular.module('ExpensesApp')
         });
         $scope.expense = Expense.get({ id: parseInt($routeParams.id, 10) });
         $scope.expense.created_at = new Date($scope.expense.created_at);
-        //console.log(40, $scope.expense, angular.isDate($scope.expense.created_at));
 
         $scope.update = function() {
             $scope.expense.$update();

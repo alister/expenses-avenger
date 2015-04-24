@@ -17,12 +17,6 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/**
- * Rest controller for expenses
- *
- * @package AppBundle\Controller
- * @author Gordon Franke <info@nevalon.de>
- */
 class ExpenseController extends FOSRestController
 {
     /**
@@ -65,7 +59,6 @@ class ExpenseController extends FOSRestController
         return $expenses;
         return ['data' => ['expenses' => $expenses]];
         return new ExpenseCollection($expenses, $offset, $limit);
-
     }
 
     public function testExpenses()
@@ -330,14 +323,13 @@ class ExpenseController extends FOSRestController
     public function deleteExpenseAction(Request $request, $id)
     {
         $this->getExpenseManager()->remove($id);
-
         // There is a debate if this should be a 404 or a 204
         // see http://leedavis81.github.io/is-a-http-delete-requests-idempotent/
         return $this->routeRedirectView('get_expenses', array(), Codes::HTTP_NO_CONTENT);
     }
 
     /**
-     * Removes a expense.
+     * Removes a expense. Alias for deleteExpenseAction
      *
      * @ApiDoc(
      *   resource = true,

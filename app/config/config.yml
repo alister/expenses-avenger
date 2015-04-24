@@ -79,16 +79,11 @@ fos_rest:
         formats:
             xml:  true
             json: true
-        templating_formats:
-            html: true
     routing_loader:
         default_format: json
-    format_listener:
-        rules:
-            - { path: ^/, priorities: [ html, json, xml ], fallback_format: ~, prefer_extension: true }
+    format_listener: true
     exception:
         enabled: true
-        #exception_controller: 'AppBundle\Controller\ApiController::ExceptionAction'
         codes:
             'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
             'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT

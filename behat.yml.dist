@@ -8,7 +8,7 @@ default:
         api:
            paths: [ "%paths.base%/features/api" ]
            contexts:
-                - ApiContext: [ %mink.base_url%, "@doctrine.orm.entity_manager"]
+                - ApiContext: [ "@doctrine.orm.entity_manager", %mink.base_url% ]
         #users_registration:
 
     extensions:

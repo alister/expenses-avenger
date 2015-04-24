@@ -1,4 +1,4 @@
-angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ng-currency'])
+angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages']) //, 'ng-currency'
     .config(["$httpProvider", "$routeProvider", "$locationProvider", function ($httpProvider, $routeProvider, $locationProvider) {
         $routeProvider
             .when('/expenses', {
@@ -23,6 +23,5 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ng-curren
     .run(function (options, Expense) {
         //Fields.get(function (data) {
         //options.displayed_fields = data;
-        console.log(40);
         expenses = Expense.query(function (data) {});
     });
