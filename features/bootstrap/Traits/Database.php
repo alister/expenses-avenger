@@ -52,8 +52,20 @@ trait Database
         $user->setUsername($hash['username']);
         $user->setPlainPassword($hash['password']);
         $user->setEmail($hash['email']);
+        $user->setEmailCanonical(strtolower($hash['email']));
         $user->setEnabled(true);
         $user->setRoles([$hash['role']]);
         $userManager->updateUser($user);
+        return $user;
     }
+
+    /**
+     * @Given print all users
+     */
+    public function printAllUsers()
+    {
+        $x = $this->em->getRepository('AppBundle:User')->findAll();
+        dump($x);
+    }
+
 }

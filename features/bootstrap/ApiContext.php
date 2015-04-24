@@ -8,7 +8,8 @@ use Behat\Symfony2Extension\Context\KernelAwareContext;
 use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
-use AppBundle\Entity\ExpenseLine;
+use AppBundle\Entity\Expense;
+use AppBundle\Entity\User;
 
 /**
  * Using tests (traits) for getting and checking websites from full URLs and
@@ -22,6 +23,7 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
     use Traits\LiveSites;
     use Traits\Api;
     use Traits\SpikeApi;
+    use Traits\Database;
 
     /**
      * Initializes context. Every scenario gets its own context object.
@@ -33,8 +35,16 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
         $baseUrl = '',
         EntityManager $entity_manager
     ) {
-        $this->em = $entity_manager;
-        $this->baseUrl = $baseUrl;
+        $this->em          = $entity_manager;
+        $this->baseUrl     = $baseUrl;
+    }
+
+    /**
+     * @Then the response should be OK, record::recNo
+     */
+    public function theResponseShouldBeOkWithRecord($recNo)
+    {
+        throw new PendingException();
     }
 
     /**
@@ -51,7 +61,7 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
         return $this->getContainer()->get($id);
     }
 
-    private function convertExpenseLine($key, $val)
+    private function convertExpense($key, $val)
     {
         switch ($key) {
         case 'createdAt':
@@ -67,24 +77,23 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
     /**
      * @Given These expense lines exist
      */
-    public function TheseExpenseLinesExist(TableNode $table)
+    public function TheseExpensesExist(TableNode $table)
     {
-        $this->em->createQuery('DELETE AppBundle:ExpenseLine')->execute();
+        // get any fully persisted user
+        $user = $this->em->getRepository('AppBundle:User')->findOneBy([]);
 
         foreach ($table->getHash() as $hash) {
-            $line = new ExpenseLine();
+            $line = new Expense();
             foreach ($hash as $key => $val) {
                 $setter = 'set'.ucfirst($key);
-                $val = $this->convertExpenseLine($key, $val);
-                // if ($key != 'createdAt') {
-                //     //#echo "\$line->{$setter}({$val});\n";
-                // }
+
+                $val = $this->convertExpense($key, $val);
                 $line->$setter($val);
             }
-            $line->setUpdatedAt(new DateTime());
-            $line->setUser(1);
+
+            $line->setUser($user);
             $this->em->persist($line);
-            $this->expenseLines[] = $line;
+            $this->expenses[] = $line;
         }
         $this->em->flush();
     }
@@ -94,7 +103,7 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
      */
     public function iCallTheApiRouteForRecord($route, $id)
     {
-        $url = $this->getService('router')->generate($route, ['line'=> $id]);
+        $url = $this->getService('router')->generate($route, ['_format'=>'json', 'id'=> $id]);
         return $this->iCallTheApiUrl($url);
     }
 
@@ -121,11 +130,30 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
     }
 
     /**
-     * @When I see all the expenseLines
+     * @When I see all the expenses
+     * 
+     * dump everything in the database
      */
-    public function iSeeAllTheExpenselines()
+    public function iSeeAllTheExpenses()
     {
-        $lines = $this->em->getRepository('AppBundle:ExpenseLine')->findAll();
-        dump($lines);die;
+        $lines = $this->em->getRepository('AppBundle:Expense')->findAll();
+    }
+
+    /**
+     * @When I see the API response
+     * 
+     * dump everything in the response
+     */
+    public function printResponse()
+    {
+        dump($this->response);
+    }
+
+    /**
+     * @When die
+     */
+    public function andDie()
+    {
+        die;
     }
 }
