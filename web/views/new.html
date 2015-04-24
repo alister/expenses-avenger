@@ -1,0 +1,33 @@
+<div class="col-md-10 offset-2">
+    <h2>New Expense</h2>
+    
+    <form class="form-horizontal"  name='newExpense' role="form">
+        <div class="form-group" ng-form="created_at" ng-class="{ 'has-error': created_at.$dirty && created_at.$invalid }" record="expense" field="created_at">
+            <label class="col-sm-2 control-label" for="created_at">Date of expense <span>*</span></label>
+            <input type="date" ng-model="expense.created_at" ng-model-options="{ updateOn: 'blur' }" id="created_at" ng-required="true">
+        </div>
+        <div class="form-group" ng-form="amount" ng-class="{ 'has-error': amount.$dirty && amount.$invalid }" record="expense" field="amount" required>
+            <label class="col-sm-2 control-label" for="amount">Amount <span>*</span></label>
+            <input type="number" ng-model="expense.amount" ng-model-options="{ updateOn: 'blur' }" id="amount" ng-required="true" min="0.01" max="999.99" step="0.01">
+            <p class="help-block">Maximum allowed expense is $999.99 on this system.</p>
+        </div>
+        <div class="form-group" ng-form="description" ng-class="{ 'has-error': description.$dirty && description.$invalid }" record="expense" field="description" required>
+            <label class="col-sm-2 control-label" for="description">Description <span>*</span></label>
+            <input type="text" ng-model="expense.description" ng-model-options="{ updateOn: 'blur' }" name="description" ng-required="true">
+            <p class="help-block"></p>
+        </div>
+
+        <div class="form-group" ng-form="comment" ng-class="{ 'has-error': comment.$dirty && comment.$invalid }" record="expense" field="comment" required>
+            <label class="col-sm-2 control-label" for="comment">Comment</label>
+            <input type="text" ng-model="expense.comment" ng-model-options="{ updateOn: 'blur' }" name="comment" ng-required="false">
+        </div>
+
+
+        <div class='row form-group'>
+            <div class='col-sm-offset-2'>
+                <button class='btn btn-primary' ng-click='save()'> Create Expense </button>
+            </div>
+        </div>
+
+    </form>
+</div>

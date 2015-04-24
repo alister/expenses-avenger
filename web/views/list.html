@@ -1,0 +1,22 @@
+<p><input type='search' class='form-control' placeholder='Search' ng-model='query' /></p>
+
+<table class='table table-hover table-bordered'>
+    <thead>
+        <tr>
+            <th ng-repeat='field in fields' ng-click='sort(field)'>
+                {{ fieldNames[$index] }}
+                <span ng-show='sort.field === field  && !sort.order' class='glyphicon glyphicon-chevron-down'></span>
+                <span ng-show='sort.field === field  && sort.order' class='glyphicon glyphicon-chevron-up'></span>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat='expense in expenses | filter: query | orderBy: sort.field : sort.order'>
+            <td>{{ expense.created_at|date }}</td>
+            <td>{{ expense.amount|currency }}</td>
+            <td>{{ expense.description }}</td>
+            <td>{{ expense.comment }}</td>
+            <td><a ng-click='show(expense.id)' class="btn btn-default btn-xs">Edit</a></td>
+        </tr>
+    </tbody>
+</table>

@@ -58,12 +58,14 @@ class ExpenseController extends FOSRestController
         $offset = $paramFetcher->get('offset');
         $start = (null == $offset) ? 0 : $offset;
         $limit = (integer)$paramFetcher->get('limit');
-        #dump($start, $limit);#die;
 
         $expenses = $this->getExpenseManager()->fetch($start, $limit);
-        #$expenses = $this->testExpenses();
-        #dump($expenses);die;
+        //#$expenses = $this->testExpenses();
+
+        return $expenses;
+        return ['data' => ['expenses' => $expenses]];
         return new ExpenseCollection($expenses, $offset, $limit);
+
     }
 
     public function testExpenses()
@@ -102,7 +104,6 @@ class ExpenseController extends FOSRestController
         return $expense;
     }
 
-
     /**
      * Get a single expense.
      *
@@ -129,6 +130,7 @@ class ExpenseController extends FOSRestController
         if (false === $expense) {
             throw $this->createNotFoundException("Expense does not exist.");
         }
+        //#dump($expense);die;
 
         $view = new View($expense);
         $group = $this->container->get('security.context')->isGranted('ROLE_API') ? 'restapi' : 'standard';
@@ -179,14 +181,37 @@ class ExpenseController extends FOSRestController
      */
     public function postExpensesAction(Request $request)
     {
-dump($request->request->get('expense'));#die;
+        $expense = new Expense();
+        //$this->handleExpensesData($request, $expense);
+        $e = $this->get('request')->request->all();
+        $dateName = 'created_at';
+        if (!isset($e[$dateName], $e['amount'], $e['description'], $e['comment'])) {
+            throw new \Exception("Error Processing Request");
+        }
+        $expense->setcreatedAt($e[$dateName]);
+        $expense->setDescription($e['description']);
+        $expense->setAmount($e['amount']);
+        $expense->setComment($e['comment']);
+
+        $this->getExpenseManager()->set($expense);
+        return $this->routeRedirectView('get_expense', array('id' => $expense->getId()));
+
+        return array(
+            'form' => $form
+        );
+        ////////////////////////////////////////
+        //#return $this->handlePostForm($request);
+    }
+
+    public function handlePostForm($request)
+    {
         $expense = new Expense();
         $form = $this->createForm(new ExpenseType(), $expense);
 
-        $form->submit($request);
+        $form->handleRequest($request);
+
         if ($form->isValid()) {
             $this->getExpenseManager()->set($expense);
-
             return $this->routeRedirectView('get_expense', array('id' => $expense->getId()));
         }
 
@@ -215,7 +240,7 @@ dump($request->request->get('expense'));#die;
      *
      * @throws NotFoundHttpException when expense not exist
      */
-    public function editExpensesAction(Request $request, $id)
+    public function editExpenseAction(Request $request, $id)
     {
         $expense = $this->getExpenseManager()->get($id);
         if (false === $expense) {
@@ -252,7 +277,7 @@ dump($request->request->get('expense'));#die;
      *
      * @throws NotFoundHttpException when expense not exist
      */
-    public function putExpensesAction(Request $request, $id)
+    public function putExpenseAction(Request $request, $id)
     {
         $expense = $this->getExpenseManager()->get($id);
         if (false === $expense) {
@@ -263,15 +288,27 @@ dump($request->request->get('expense'));#die;
             $statusCode = Codes::HTTP_NO_CONTENT;
         }
 
-        $form = $this->createForm(new ExpenseType(), $expense);
-
-        $form->submit($request);
-        if ($form->isValid()) {
-            $this->getExpenseManager()->set($expense);
-
-            return $this->routeRedirectView('get_expense', array('id' => $expense->getId()), $statusCode);
+        $e = $this->get('request')->request->all();
+        $dateName = 'created_at';
+        if (isset($e[$dateName])) {
+            $expense->setcreatedAt($e[$dateName]);
+        }
+        if (isset($e['description'])) {
+            $expense->setDescription($e['description']);
+        }
+        if (isset($e['amount'])) {
+            $expense->setAmount($e['amount']);
+        }
+        if (isset($e['comment'])) {
+            $expense->setComment($e['comment']);
         }
 
+        $this->getExpenseManager()->set($expense);
+        return $this->routeRedirectView('get_expense', array('id' => $expense->getId()), $statusCode);
+        #$form = $this->createForm(new ExpenseType(), $expense);
+        // $form->submit($request);
+        // if ($form->isValid()) {
+        //}
         return $form;
     }
 
@@ -290,7 +327,7 @@ dump($request->request->get('expense'));#die;
      *
      * @return RouteRedirectView
      */
-    public function deleteExpensesAction(Request $request, $id)
+    public function deleteExpenseAction(Request $request, $id)
     {
         $this->getExpenseManager()->remove($id);
 
@@ -314,8 +351,8 @@ dump($request->request->get('expense'));#die;
      *
      * @return RouteRedirectView
      */
-    public function removeExpensesAction(Request $request, $id)
+    public function removeExpenseAction(Request $request, $id)
     {
-        return $this->deleteExpensesAction($request, $id);
+        return $this->deleteExpenseAction($request, $id);
     }
 }

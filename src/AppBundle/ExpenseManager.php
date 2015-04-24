@@ -43,7 +43,7 @@ class ExpenseManager
     public function get($id)
     {
         $expense = $this->repo->find($id);
-        dump($expense);#die;
+        ///#dump($expense);#die;
         return $expense;
 
         if (!isset($this->data[$id])) {
@@ -54,7 +54,7 @@ class ExpenseManager
 
     public function set(Expense $expense)
     {
-dump($expense);#die;
+        //#dump($expense);#die;
         return $this->repo->save($expense);
 
         if (null === $expense->getId()) {
@@ -71,7 +71,6 @@ dump($expense);#die;
         // }
 
         $this->data[$expense->getId()] = $expense;
-dump($this->data);
     }
 
     public function remove($id)

@@ -1,0 +1,37 @@
+<div class="span12">
+
+    <h3>Please update your recent expenses</h3>
+
+    <table ng-table="tableParams" class="table table-striped table-hover">
+        <thead>
+            <td><strong>Date</strong></td>
+            <td><strong>Amount</strong></td>
+            <td><strong>Description</strong></td>
+            <td><strong>Comment</strong></td>
+            <td></td>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="line in expenses">
+                <p>{{line.created_at}}</p>
+                <td data-title="'Date'" width="200">
+                    <span>{{line.created_at|date:'dd MMMM yyyy'}}</span>
+                </td>
+                <td data-title="'Amount'">
+                    <span>{{line.amount | currency:"£":2}}</span>
+                </td>
+                <td data-title="'Description'">
+                    <span>{{line.description}}</span>
+                </td>
+                <td data-title="'Comment'">
+                    <span>{{line.comment}}</span>
+                </td>
+                <td data-title="'Actions'" width="200">
+
+                <a class="btn btn-xs" ng-click="editExpense(line.id)">Edit</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

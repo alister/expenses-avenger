@@ -10,21 +10,23 @@ class ExpenseType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('createdAt', 'date', array(
+        $builder->add('created_at', 'date', array(
             'description' => 'When the expense was reported',
-            #'date_widget' => 'single_text',
             'html5' => true,
-            'input' => 'datetime',
-        ));
-        $builder->add('amount', 'money', array(
+            'widget' => 'single_text',
+            'input' => 'string',
+            'format' => 'yyyy-MM-dd',
+        ))
+        ->add('amount', 'money', array(
             'description' => 'Cost of expense',
             'currency' => 'BRL',   // Brazilian 'Real' currency
-        ));
-        $builder->add('description', 'text', array(
+        ))
+        ->add('description', 'text', array(
             'description' => 'Description of expense',
-        ));
-        $builder->add('comment', 'textarea', array(
+        ))
+        ->add('comment', 'textarea', array(
             'description' => 'Additional comment',
+            'required' => false,
         ));
     }
 
@@ -40,6 +42,7 @@ class ExpenseType extends AbstractType
 
     public function getName()
     {
-        return 'expense';
+        // don't put the data to be returned into an array - just flat POSTs
+        return '';
     }
 }
