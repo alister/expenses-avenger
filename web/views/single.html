@@ -1,27 +1,28 @@
-<div class="col-md-10 offset-2">
+<div class="col-md-10 offset-2" ng-model="expense">
+
     <h2>Editing '{{expense.description}}', from {{expense.created_at|date}}</h2>
-<!-- <h6>single</h6> -->
+ <!--<h6>single</h6> -->
 
     <form name='editExpense' class='form-horizontal'>
 
-        <div class="form-group" ng-form="created_at" ng-class="{ 'has-error': created_at.$dirty && created_at.$invalid }" record="expense" field="created_at" required>
+        <div class="form-group" ng-form="created_at" ng-class="{ 'has-error': created_at.$dirty && created_at.$invalid }" record="expense" field="created_at">
             <label class="col-sm-2 control-label" for="created_at">Date of expense <span>*</span></label>
-            <input type="date" ng-model="expense.created_at" ng-model-options="{ updateOn: 'blur' }" step="0.01">   <!-- name="created_at" ng-required="true" placeholder="yyyy-mm-dd" min="2015-01-01" -->
+            <input type="date" ng-model="expense.created_at" ng-required="true" min="2015-01-01">   <!-- name="created_at" placeholder="yyyy-mm-dd" -->
         </div>
 
-        <div class="form-group" ng-form="amount" ng-class="{ 'has-error': amount.$dirty && amount.$invalid }" record="expense" field="amount" required>
+        <div class="form-group" ng-form="amount" ng-class="{ 'has-error': amount.$dirty && amount.$invalid }" record="expense" field="amount">
             <label class="col-sm-2 control-label" for="amount">Amount <span>*</span></label>
-            <input type="number" ng-model="expense.amount" ng-model-options="{ updateOn: 'blur' }" id="amount" ng-required="true" min="0.01" max="999.99" step="0.01">
+            <input type="text" ng-model="expense.amount" name="amount" ng-required="true" ng-currency min="0.01" max="999.99" step="0.01">
         </div>
 
-        <div class="form-group" ng-form="description" ng-class="{ 'has-error': description.$dirty && description.$invalid }" record="expense" field="description" required>
+        <div class="form-group" ng-form="description" ng-class="{ 'has-error': description.$dirty && description.$invalid }" record="expense" field="description">
             <label class="col-sm-2 control-label" for="description">Description <span>*</span></label>
-            <input type="text" ng-model="expense.description" ng-model-options="{ updateOn: 'blur' }" name="description" ng-required="true">
+            <input type="text"   ng-model="expense.description" name="description" ng-required="true">
         </div>
 
-        <div class="form-group" ng-form="comment" ng-class="{ 'has-error': comment.$dirty && comment.$invalid }" record="expense" field="comment" required>
+        <div class="form-group" ng-form="comment" ng-class="{ 'has-error': comment.$dirty && comment.$invalid }" record="expense" field="comment">
             <label class="col-sm-2 control-label" for="comment">Comment</label>
-            <input type="text" ng-model="expense.comment" ng-model-options="{ updateOn: 'blur' }" name="comment" ng-required="false">
+            <input type="text" ng-model="expense.comment" name="comment" ng-required="false">
         </div>
 
         <div class='form-group'>

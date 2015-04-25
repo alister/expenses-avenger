@@ -47,7 +47,6 @@ class ExpenseManager
         return $x;
     }
 
-
     public function fetch($start = 0, $limit = 25, $filterParams = [])
     {
         #$expenses = $this->repo->findAll();
@@ -71,12 +70,12 @@ class ExpenseManager
     public function get($id)
     {
         $expense = $this->repo->find($id);
-        ///#dump($expense);#die;
         return $expense;
 
         if (!isset($this->data[$id])) {
             return false;
         }
+
         return $this->data[$id];
     }
 

@@ -4,6 +4,11 @@ expense:
     defaults:
         _controller: FrameworkBundle:Template:template
         template:    "::index.html.twig"
+expense_anything:
+    path: /expenses/{anything}
+    defaults:
+        _controller: FrameworkBundle:Template:template
+        template:    "::index.html.twig"
 
 api:
     type:     rest
