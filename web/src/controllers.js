@@ -56,4 +56,32 @@ angular.module('ExpensesApp')
             $location.url('/expenses');            
             redirectTo: '/expenses';
         };
-    });
+    })
+    //.controller('FilterDateController', function ($scope, $rootScope) {
+    .controller('FilterDateController', ['$filter', function($filter) {
+            this.activeDate;
+            this.selectedDates = [new Date().setHours(0, 0, 0, 0)];
+            this.type = 'range';
+    
+            this.identity = angular.identity;
+    
+            this.removeFromSelected = function(dt) {
+                this.selectedDates.splice(this.selectedDates.indexOf(dt), 1);
+            }
+            this.filterByTimestamps = function() {
+                var startDate = $filter('orderBy')(this.selectedDates, '', false)[0];
+                var endDate   = $filter('orderBy')(this.selectedDates, '', true)[0];
+                
+                var startDateStr = moment(startDate).format('YYYY-MM-DD');
+                var endDateStr = moment(endDate).format('YYYY-MM-DD');
+                
+                //alert(startDateStr + ' / ' + endDateStr);
+            }
+            //$rootScope.PAGE = "filter-date";
+            // $scope.delete = function () {
+            //     $scope.expense.$delete();
+            //     $location.url('/expenses');
+            //     redirectTo: '/expenses';
+            // };
+        }]);
+;

@@ -1,0 +1,37 @@
+<div class="col-md-10 offset-2">
+    <div ng-controller='FilterDateController as filDate'>
+
+    <h3>Select a date range to narrow the list of expenses</h3>
+    
+    <table>
+      <tr>
+        <td>
+            <datepicker ng-model='filDate.activeDate' multi-select='filDate.selectedDates' select-range='true'><datepicker>
+        </td>
+        <td style='width:50px'></td>
+        <td id="dateRangeChoice">
+          <!-- <div ng-if='filDate.type=="individual"'>
+            Selected Dates:
+            <div class='well well-sm'>
+              <div ng-repeat='d in filDate.selectedDates | orderBy : filDate.identity'>
+                {{d | date : 'fullDate'}}
+                <button class='btn btn-xs btn-warning' style='margin:5px' ng-click='filDate.removeFromSelected(d)'>Remove</button>
+              </div>
+            </div>
+          </div> -->
+          <div ng-if='filDate.type=="range"' >
+            Selected Range: 
+            <div class='well well-sm'>
+              {{(filDate.selectedDates | orderBy)[0] | date:"fullDate"}}
+              <span ng-if='filDate.selectedDates.length > 1'>
+                - {{(filDate.selectedDates | orderBy : '-')[0] | date:"fullDate"}}
+              </span>
+            </div>
+            <p><a ng-click='filDate.filterByTimestamps(filDate.selectedDates)' class="btn btn-primary">Filter expenses</a></p>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    </div>
+</div>

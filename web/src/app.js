@@ -1,4 +1,4 @@
-angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages']) //, 'ng-currency'
+angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootstrap', 'gm.datepickerMultiSelect']) //, 'ng-currency'
     .config(["$httpProvider", "$routeProvider", "$locationProvider", function ($httpProvider, $routeProvider, $locationProvider) {
         $routeProvider
             .when('/expenses', {
@@ -8,6 +8,10 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages']) //, 'ng-c
             .when('/expense/new', {
                 controller: 'NewController',
                 templateUrl: 'views/new.html'
+            })
+            .when('/expense/filter', {
+                controller: 'FilterDateController',
+                templateUrl: 'views/filter-date.html'
             })
             .when('/expense/:id', {
                 controller: 'SingleController',
@@ -23,5 +27,15 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages']) //, 'ng-c
     .run(function (options, Expense) {
         //Fields.get(function (data) {
         //options.displayed_fields = data;
-        expenses = Expense.query(function (data) {});
+        data = Expense.query(function (data) {});
+        expenses = data;
     });
+angular.module('ExpensesApp')
+    .factory('Expense', function ($resource) {
+        return $resource('http://nas.abulman.co.uk:8000/app_dev.php/api/v1/expenses/:id.json', { id: '@id' }, {
+            'update':  { method: 'PUT', isArray: true },
+            'get':     { method: 'GET' },
+            'options': {/*method: 'GET'*/ }
+        });
+    })
+;
