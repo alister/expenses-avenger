@@ -17,14 +17,42 @@ class ExpenseManager
 
     private function flush()
     {
-        #file_put_contents($this->cacheDir . '/sf_note_data', serialize($this->data));
     }
 
-    public function fetch($start = 0, $limit = 25)
+    public function buildFilterQuery(array $filterParams)
+    {
+        $query = $this->repo->createQueryBuilder('e');
+
+        // refactor with andX() if we add more filters
+        if (isset($filterParams['startDate'], $filterParams['endDate'])) {
+            $query->where('(e.createdAt >= :startDate) AND (e.createdAt <= :endDate)')
+                ->setParameter('startDate', $filterParams['startDate'])
+                ->setParameter('endDate', $filterParams['endDate']);
+        }
+
+        if (isset($filterParams['limit'])) {
+            $query->setMaxResults($filterParams['limit']);
+        }
+
+        if (isset($filterParams['offset'])) {
+            $query->setFirstResult($filterParams['offset']);
+        }
+        return $query->getQuery();
+    }
+
+    public function fetchFiltered(array $filterParams)
+    {
+        $query = $this->buildFilterQuery($filterParams);
+        $x = $query->getResult();
+        return $x;
+    }
+
+
+    public function fetch($start = 0, $limit = 25, $filterParams = [])
     {
         #$expenses = $this->repo->findAll();
         $expensesOrdered = $this->repo->findBy(
-            array(),
+            $filterParams,
             array('createdAt' => 'DESC'),
             $limit,
             $start
