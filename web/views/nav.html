@@ -1,9 +1,22 @@
 <nav class='navbar navbar-default'>
     <div class='container-fluid'>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#home">Expenses, <small>by <strong>Alister Bulman</strong></small></a>
+        </div>
         <ul class='nav navbar-nav'>
             <li ng-class='{ active: PAGE === "all" }'><a href='/expenses'> All Expenses </a></li>
             <li ng-class='{ active: PAGE === "new" }'><a href='/expense/new'> New Expense </a></li>
             <li ng-class='{ active: PAGE === "filter" }'><a href='/expense/weekly-summary'> Summary by week </a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+            <li ng-class='{ active: PAGE === "about" }'><a href="/about">About</a></li>
+            <li ng-class='{ active: PAGE === "alister" }'><a href="/alister">Alister</a></li>
         </ul>
         <!-- <ul class='nav navbar-nav navbar-right'>
             <li><a href='/logout' target='_self'> Log Out </a></li>

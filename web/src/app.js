@@ -28,6 +28,12 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootst
                 controller: 'SingleController',
                 templateUrl: 'views/single.html'
             })
+            .when('/about', {
+                templateUrl: 'views/about.html'
+            })
+            .when('/alister', {
+                templateUrl: 'views/alister.html'
+            })
             .otherwise({
                 redirectTo: '/expenses'
             });
