@@ -32,11 +32,11 @@ class Expense
      * 
      * @var User
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="expensesOwned")
+     * @-ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="expensesOwned")
      *
      * @-Serializer\Expose
      */
-    private $user;
+    //private $user;   Until we get there, leave it
 
     /**
      * Date of expense (input by user, default to today)

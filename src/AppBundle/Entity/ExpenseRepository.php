@@ -35,12 +35,12 @@ class ExpenseRepository extends EntityRepository
                 'SELECT e
                 FROM AppBundle:Expense e
                 WHERE 
-                    e.user = :user AND 
                     e.createdAt >= :startCreatedAt AND 
                     e.createdAt <= :endCreatedAt
                 ORDER BY e.createdAt ' . $order
+                    //e.user = :user AND 
             )
-            ->setParameter('user', $user)
+            //->setParameter('user', $user)
             ->setParameter('startCreatedAt', $startDate)
             ->setParameter('endCreatedAt', $endDate)
             //#->setParameter('orderBy', $order)
