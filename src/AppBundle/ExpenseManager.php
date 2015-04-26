@@ -15,6 +15,30 @@ class ExpenseManager
         $this->repo = $repo;
     }
 
+    public function fetchSummary(array $params)
+    {
+        $weeklySummary = [
+            [   'weekStart' => '2015-04-13',
+                'weekEnd'   => '2015-04-19',
+                'total'     => number_format(68, 2),
+                'avgDay'    => number_format(round(68/7, 2), 2),
+            ],
+            // @todo - go and calculate the data
+            [   'weekStart' => '2015-04-06',
+                'weekEnd'   => '2015-04-12',
+                'total'     => number_format(22, 2),
+                'avgDay'    => number_format(round(22/7, 2), 2),
+            ],
+            [   'weekStart' => '2015-03-30',
+                'weekEnd'   => '2015-04-05',
+                'total'     => number_format(15, 2),
+                'avgDay'    => number_format(round(15/7, 2), 2),
+            ],
+
+        ];
+        return $weeklySummary;
+    }
+
     private function flush()
     {
     }

@@ -3,6 +3,9 @@ namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
+/**
+ * tests via the internally booted kernel to the JSON HTTP endpoint
+ */
 class ExpenseControllerTest extends WebTestCase
 {
     public function setUp()
@@ -119,7 +122,7 @@ class ExpenseControllerTest extends WebTestCase
     }
 
     /**
-     * FInally, we test deleting the item.
+     * Finally, for this chain of @depends, we test deleting the item.
      * 
      * @depends testGet
      */
@@ -148,6 +151,11 @@ class ExpenseControllerTest extends WebTestCase
         ], $data);
     }
 
+    /**
+     * Try to get something that SHOULD NOT exist, to confirm the no-content
+     * 
+     * It's not like we truely expect it to be, there is 'No Content' at the location
+     */
     public function testDeleteNotFound()
     {
         $id = PHP_INT_MAX;
@@ -165,7 +173,7 @@ class ExpenseControllerTest extends WebTestCase
      * 
      * This does a ksort of copies of the $expected and $actual arrays.
      */
-    public function assertArraysEqual($expectedOrig, $actualOrig, $msg = "ordered arrays do not match")
+    public function assertArraysEqual($expectedOrig, $actualOrig, $msg = "re-ordered arrays do not match")
     {
         $this->assertEquals($expectedOrig, $actualOrig, $msg, $delta = 0.0, $maxDepth = 10, $canonicalize = false);
         return;

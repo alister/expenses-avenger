@@ -65,7 +65,6 @@ class ExpenseController extends FOSRestController
         return new ExpenseCollection($expenses, $offset, $limit);
     }
 
-
     /**
      * List all expenses.
      *
@@ -85,15 +84,7 @@ class ExpenseController extends FOSRestController
      */
     public function getSummaryAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        //$expenses = $this->getExpenseManager()->fetchFiltered($paramFetcher->all());
-        $expenses = [
-            [   'weekStart' => '2015-04-13',
-                'total'     => 22,
-                'avgDay'    => 22,
-            ],
-            #[],
-            #[],
-        ];
+        $expenses = $this->getExpenseManager()->fetchSummary($paramFetcher->all());
         return $expenses;
     }
 
