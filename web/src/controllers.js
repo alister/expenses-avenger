@@ -5,16 +5,16 @@ angular.module('ExpensesApp')
             $scope.fields = ['created_at', 'amount', 'description', 'comment'];
             $scope.fieldNames = ['Date', 'Amount', 'Description', 'Comment'];
             $scope.sort = function (field) {
+                //console.log('sort by '+field);
                 $scope.sort.field = field;
                 $scope.sort.order = !$scope.sort.order;
-                console.log('sort by '+field);
             };
             $scope.sort.field = 'created_at';
             $scope.sort.order = true;   // DESC, recent first
 
             $scope.show = function (id) {
-                console.log('show()');
-                $location.url('/expense/' + id);
+                //console.log('show()');
+                $location.path('/expense/' + id);
             };
             $scope.loadAll = function() {
                 //console.log('Load all.');
@@ -24,10 +24,11 @@ angular.module('ExpensesApp')
             };
             //$scope.loadAll();
             //console.log('ran through controller');
+            //console.log($scope.expenses);
     }])
     .controller('SummaryController', ['$scope', 'WeeklySpend', 'Expense', '$location',
-        //console.log('SummaryController');
         function ($scope, WeeklySpend, Expense, $location) {
+            //console.log('SummaryController');
             $scope.weeklySummary = function() {
                 //console.log('call weeklySummary');
                 WeeklySpend.query({}, function(data) {
@@ -40,14 +41,14 @@ angular.module('ExpensesApp')
             // I can't figure out how to get the results of the query displayed on the main page
             // without it being reset and all the records being fetched
             // $scope.filterSpendByDate = function(weekSummary) {
-            //     console.log('filterSpendByDate()');
-            //     console.log(weekSummary);
-            //     console.log(weekSummary.weekStart);
-            //     console.log(weekSummary.weekEnd);
-            //     Expense.query({'startDate': weekSummary.weekStart, 'endDate': weekSummary.weekEnd}, function(expenses) {
+            //     //console.log('filterSpendByDate()');
+            //     //console.log(weekSummary);
+            //     //console.log(weekSummary.earliestDate);
+            //     //console.log(weekSummary.latestDate);
+            //     Expense.query({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate}, function(expenses) {
             //         $scope.expenses = expenses;
-            //         console.log('Expense.query()');
-            //         console.log(expenses);
+            //         //console.log('Expense.query()');
+            //         //console.log(expenses);
             //         $location.path('/expenses');
             //     });
             // };
@@ -67,13 +68,13 @@ angular.module('ExpensesApp')
                 $scope.$broadcast('record:invalid');
             } else {
                 $scope.expense.$save();
-                $location.url('/expenses');
+                $location.path('/expenses');
             }
         };
     }])
     .controller('SingleController', function ($scope, $rootScope, $location, Expense, $routeParams) {
         //$rootScope.PAGE = "single";
-        //console.log($routeParams.id);
+        //console.log('expens Id:' + $routeParams.id);
         Expense.get({ id: parseInt($routeParams.id, 10) }, function(data) {
             $scope.expense = data;
             //console.log(data);
@@ -84,11 +85,11 @@ angular.module('ExpensesApp')
 
         $scope.update = function() {
             $scope.expense.$update();
-            $location.url('/expenses');
+            $location.path('/expenses');
         };
         $scope.delete = function () {
             $scope.expense.$delete();
-            $location.url('/expenses');
+            $location.path('/expenses');
         };
     })
     //.controller('FilterDateController', function ($scope, $rootScope) {
