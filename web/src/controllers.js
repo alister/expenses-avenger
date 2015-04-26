@@ -10,7 +10,7 @@ angular.module('ExpensesApp')
                 console.log('sort by '+field);
             };
             $scope.sort.field = 'created_at';
-            $scope.sort.order = false;
+            $scope.sort.order = true;   // DESC, recent first
 
             $scope.show = function (id) {
                 $location.url('/expense/' + id);
