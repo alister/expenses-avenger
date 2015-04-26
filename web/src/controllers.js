@@ -22,7 +22,7 @@ angular.module('ExpensesApp')
                     $scope.expenses = expenses;
                 });
             };
-            $scope.loadAll();
+            //$scope.loadAll();
             //console.log('ran through controller');
     }])
     .controller('SummaryController', ['$scope', 'WeeklySpend', 'Expense', '$location',

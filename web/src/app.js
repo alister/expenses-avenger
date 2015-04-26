@@ -41,31 +41,32 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootst
         }
     ])
     .value('options', {})
-    .run(function (options, Expense) {
+    .run(function ($rootScope, options, Expense) {
         //Fields.get(function (data) {
         //  options.displayed_fields = data;
         //}
 
         paramsObj= {};
-        // Expense.query(function(data) {
-        //     console.log('Got run() Data:');
-        //     console.log(data);
-        //     expenses = data;
-        // }, function() {
-        //     console.log('Fetch run() fail.');
-        // });
+        Expense.query(function(data) {
+            // console.log('Got run() Data:');
+            // console.log(data);
+            $rootScope.expenses = data;
+        }, function() {
+            // console.log('Fetch run() fail.');
+        });
     });
 angular.module('ExpensesApp')
     .factory('Expense', function ($resource) {
         return $resource('/api/v1/expenses/:id.json',  //http://nas.abulman.co.uk:8000/app_dev.php
-            {  id: '@id' },
+            {
+                id: '@id'
+            },
             {
                 'update':      { method: 'PUT', isArray: true },
                 'get':         { method: 'GET' },
                 'options':     {/*method: 'GET'*/ }
             }
         );
-
     })
     .factory('WeeklySpend', function ($resource) {
         return $resource('/api/v1/summary.json', 
