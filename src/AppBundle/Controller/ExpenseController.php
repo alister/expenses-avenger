@@ -39,8 +39,8 @@ class ExpenseController extends FOSRestController
      *
      * @Annotations\QueryParam(name="offset", requirements="\d+", nullable=true, description="Offset from which to start listing expenses.")
      * @Annotations\QueryParam(name="limit", requirements="\d+", default="25", description="How many expenses to return.")
-     * @Annotations\QueryParam(name="startDate", requirements="\d{4}-\d{2}-\d{2}", default="1900-01-01", nullable=true, description="Start date filter")
-     * @Annotations\QueryParam(name="endDate", requirements="\d{4}-\d{2}-\d{2}", default="2199-12-31", nullable=true, description="End date when filtering")
+     * @Annotations\QueryParam(name="startDate", default="1900-01-01", nullable=true, description="Start date filter")
+     * @Annotations\QueryParam(name="endDate", default="2199-12-31", nullable=true, description="End date when filtering")
      *
      * @Annotations\View()
      *
@@ -54,10 +54,11 @@ class ExpenseController extends FOSRestController
         $offset = $paramFetcher->get('offset');
         $start = null == $offset ? 0 : $offset + 1;
         $limit = $paramFetcher->get('limit');
-        $startDate = $paramFetcher->get('startDate');
-        $endDate = $paramFetcher->get('endDate');
+        $params = $paramFetcher->all();
+        $params['startDate'] = new DateTime($params['startDate']);
+        $params['endDate']   = new DateTime($params['endDate']);
 
-        $expenses = $this->getExpenseManager()->fetchFiltered($paramFetcher->all());
+        $expenses = $this->getExpenseManager()->fetchFiltered($params);
         //#$expenses = $this->testExpenses();
 
         return $expenses;

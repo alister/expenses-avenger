@@ -4,9 +4,9 @@
 
 Test project for the final step of TopTal interview process.
 
-
 ### front-end
-...
+
+Angular
 
 ### Symfony v2.6.6 - backed API.
 
