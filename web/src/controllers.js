@@ -12,17 +12,27 @@ angular.module('ExpensesApp')
             $scope.sort.field = 'created_at';
             $scope.sort.order = true;   // DESC, recent first
 
+            // console.log('routeParams:');
+            // console.log($routeParams);
+
             $scope.show = function (id) {
                 //console.log('show()');
                 $location.path('/expense/' + id);
             };
-            $scope.loadAll = function() {
+            $scope.loadAll = function(params) {
                 //console.log('Load all.');
-                Expense.query({}, function(expenses) {
+                $scope.isDataSubset = false;
+                // console.log('params:');
+                // console.log(params);
+                if (params.startDate) {
+                    $scope.isDataSubset = true;
+                    // console.log('isDataSubset = true');
+                }
+                Expense.query(params, function(expenses) {
                     $scope.expenses = expenses;
                 });
             };
-            //$scope.loadAll();
+            $scope.loadAll($routeParams);
             //console.log('ran through controller');
             //console.log($scope.expenses);
     }])
@@ -40,18 +50,18 @@ angular.module('ExpensesApp')
 
             // I can't figure out how to get the results of the query displayed on the main page
             // without it being reset and all the records being fetched
-            // $scope.filterSpendByDate = function(weekSummary) {
-            //     //console.log('filterSpendByDate()');
-            //     //console.log(weekSummary);
-            //     //console.log(weekSummary.earliestDate);
-            //     //console.log(weekSummary.latestDate);
-            //     Expense.query({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate}, function(expenses) {
-            //         $scope.expenses = expenses;
-            //         //console.log('Expense.query()');
-            //         //console.log(expenses);
-            //         $location.path('/expenses');
-            //     });
-            // };
+            $scope.filterSpendByDate = function(weekSummary) {
+                //console.log('filterSpendByDate()');
+                //console.log(weekSummary);
+                //console.log(weekSummary.earliestDate);
+                //console.log(weekSummary.latestDate);
+                Expense.query({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate}, function(expenses) {
+                    $scope.expenses = expenses;
+                    //console.log('Expense.query()');
+                    //console.log(expenses);
+                    $location.path('/expenses').search({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate});
+                });
+            };
 
             //$scope.weeklySummary();
             WeeklySpend.query({}, function(data) {

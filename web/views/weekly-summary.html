@@ -11,7 +11,8 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat='spend in weeklySpend | filter: query | orderBy: sort.field : sort.order'>
+        <tr ng-repeat='spend in weeklySpend | filter: query | orderBy: sort.field : sort.order'
+            ng-click='filterSpendByDate(spend)'>
             <td>{{ spend.startOfWeek|date:'mediumDate' }}</td>
             <td>{{ spend.Qty  }}</td>
             <td>{{ spend.totAmount|currency }}</td>
@@ -23,6 +24,7 @@
         </tr>
     </tbody>
 </table>
+<p>Click the individual rows to show only that week's items.</p>
 
 
 <!--
