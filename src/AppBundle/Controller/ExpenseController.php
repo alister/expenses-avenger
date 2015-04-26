@@ -81,10 +81,12 @@ class ExpenseController extends FOSRestController
      * @param ParamFetcherInterface $paramFetcher param fetcher service
      *
      * @return array
+     * 
+     * @todo $paramFetcher - also filter down by date, or limit/page
      */
     public function getSummaryAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        $expenses = $this->getExpenseManager()->fetchSummary($paramFetcher->all());
+        $expenses = $this->getExpenseManager()->calcSummary($paramFetcher->all());
         return $expenses;
     }
 

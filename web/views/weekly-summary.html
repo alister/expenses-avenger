@@ -5,17 +5,21 @@
     <thead>
         <tr>
             <td>Week Beginning</td>
+            <td>Number of claims</td>
             <td>Total Spent</td>
-            <td>Average spent per day</td>             
+            <td>Average spent per day</td>
         </tr>
     </thead>
     <tbody>
-        <!-- <tr><td colspan="3">{{weeklySpend}}, {{weeklySummary}}</td></tr> -->
-
         <tr ng-repeat='spend in weeklySpend | filter: query | orderBy: sort.field : sort.order'>
-            <td>{{ spend.weekStart|date }}</td>
-            <td>{{ spend.total|currency }}</td>
-            <td>{{ spend.avgDay|currency  }}</td>
+            <td>{{ spend.startOfWeek|date:'mediumDate' }}</td>
+            <td>{{ spend.Qty  }}</td>
+            <td>{{ spend.totAmount|currency }}</td>
+            <td>{{ spend.avgAmount|currency }} (<ng-pluralize count="spend.numDaysSpent"
+                                            when="{'0': '.',
+                                                'one': '1 Day',
+                                                'other': '{} Days'}"></ng-pluralize>)
+            </td>
         </tr>
     </tbody>
 </table>

@@ -3,6 +3,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Entity\Expense;
+use Carbon\Carbon;
 
 /**
  * ExpenseRepository
@@ -32,6 +33,65 @@ class ExpenseRepository extends EntityRepository
             $order = 'DESC';
         }
         return $this->getEntityManager()->createQuery(
+                'SELECT e
+                FROM AppBundle:Expense e
+                WHERE 
+                    e.createdAt >= :startCreatedAt AND 
+                    e.createdAt <= :endCreatedAt
+                ORDER BY e.createdAt ' . $order
+                    //e.user = :user AND 
+            )
+            //->setParameter('user', $user)
+            ->setParameter('startCreatedAt', $startDate)
+            ->setParameter('endCreatedAt', $endDate)
+            //#->setParameter('orderBy', $order)
+            ->getResult();
+    }
+
+    public function summaryByWeek()
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $query = $conn->prepare(
+            'SELECT 
+                -- YEARWEEK(createdAt) as yrWeek,
+                MIN(createdAt) as earliestDate,
+                MAX(createdAt) as latestDate,
+                COUNT(DATE(createdAt)) as numDaysSpent,
+                SUM(amount) as totAmount,
+                AVG(amount) as avgAmount,
+                COUNT(id) as Qty
+            FROM expenses
+            GROUP BY YEARWEEK(createdAt)'
+        );
+        $query->execute();
+        $results = $query->fetchAll();
+
+        $summary = [];
+        foreach ($results as $weekSummary) {
+            $week = $weekSummary;
+            $week['avgAmount'] = number_format($week['avgAmount'], 2);
+            ;
+            $week['startOfWeek'] = 1000* (new Carbon($week['earliestDate']))->startOfWeek()->format('U');
+            $week['endOfWeek'] = 1000* (new Carbon($week['latestDate']))->endOfWeek()->format('U');
+            $summary[] = $week;
+        }
+        return $summary;
+#dump($results);die;
+
+        $x = $conn->executeUpdate(
+            
+        );
+
+        //$query->setParameter(1, 'romanb');
+        return $query->getResult();
+
+        $order = strtoupper($order);
+        // verify the only values allowed
+        if (! in_array($order, ['ASC', 'DESC'])) {
+            $order = 'DESC';
+        }
+
+        return createQuery(
                 'SELECT e
                 FROM AppBundle:Expense e
                 WHERE 

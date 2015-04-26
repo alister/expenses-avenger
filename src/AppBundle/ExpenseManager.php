@@ -15,9 +15,16 @@ class ExpenseManager
         $this->repo = $repo;
     }
 
-    public function fetchSummary(array $params)
+    public function calcSummary($params)
     {
-        $weeklySummary = [
+        return $this->repo->summaryByWeek();
+        //return $this->CalcSummaryTestData($params);
+    }
+
+    public function CalcSummaryTestData($params = [])
+    {
+        // @todo params to narrow down
+        return [
             [   'weekStart' => '2015-04-13',
                 'weekEnd'   => '2015-04-19',
                 'total'     => number_format(68, 2),
@@ -34,9 +41,7 @@ class ExpenseManager
                 'total'     => number_format(15, 2),
                 'avgDay'    => number_format(round(15/7, 2), 2),
             ],
-
         ];
-        return $weeklySummary;
     }
 
     private function flush()

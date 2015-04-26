@@ -39,4 +39,10 @@ class ExpenseManagerTest extends KernelTestCase
              ],
         );
     }
+
+    public function testFetchSummary()
+    {
+        $this->e->calcSummary([]);
+    }
+
 }
