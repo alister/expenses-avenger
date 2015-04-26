@@ -13,9 +13,6 @@ class ExpenseManagerTest extends KernelTestCase
     {
         self::bootKernel();
         $this->container = static::$kernel->getContainer();
-
-        #$this->eRepo = M::Mock('AppBundle\Entity\ExpenseRepository');
-        #$this->eRepo = new ExpenseRepository;
         $this->e = $this->container->get('app.expense_manager');
     }
 

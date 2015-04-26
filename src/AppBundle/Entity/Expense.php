@@ -68,7 +68,8 @@ class Expense
      * 
      * Again, MySQL shouldn't have the problem.
      * 
-     * @ORM\Column(name="amount", type="string")
+     * @-ORM\Column(name="amount", type="string")   SQLITE only
+     * @ORM\Column(name="amount", type="decimal", precision=7, scale=2)
      * @Serializer\Expose
      */
     private $amount;
@@ -183,7 +184,7 @@ class Expense
      * Set amount
      *
      * To avoid problems with floats, we store it in the model as a string
-     * and then it's co-erced as required. In the DB it's a DECIMAL
+     * and then it's co-erced as required. In the (mysql)DB it's a DECIMAL
      * 
      * @param string $amount
      * @return ExpenseLine

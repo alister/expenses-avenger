@@ -27,6 +27,9 @@ trait Database
         $purger = new ORMPurger($entityManager);
         $purger->purge();
 
+        if ($driver->getDatabasePlatform()->supportsIdentityColumns()) {
+            $entityManager->getConnection()->executeUpdate("ALTER TABLE expenses AUTO_INCREMENT = 1;");
+        }            
         if ($supportsForeignKeyConstraints) {
             $entityManager->getConnection()->executeUpdate("SET foreign_key_checks = 1;");
         }
