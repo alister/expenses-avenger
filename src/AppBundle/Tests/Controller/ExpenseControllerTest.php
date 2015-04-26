@@ -2,12 +2,15 @@
 namespace AppBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use AppBundle\Tests\InsertingTestExpenses;
 
 /**
  * tests via the internally booted kernel to the JSON HTTP endpoint
  */
 class ExpenseControllerTest extends WebTestCase
 {
+    use InsertingTestExpenses;
+
     public function setUp()
     {
         $this->client = static::createClient();
@@ -213,41 +216,9 @@ class ExpenseControllerTest extends WebTestCase
         $this->assertGreaterThan(2, $data);
 
         // this does depend on only ONE record being POSTed (here, from 
-        // filterSourceData) that is within the date range
-        $data = $this->dataFromApi('GET', '/api/v1/expenses.json?startDate=2012-01-01&endDate=2012-01-07');
-        $this->assertCount(1, $data);
-    }
-
-    /**
-     * Posting multiple sets of data - used internally
-     * 
-     * the tests just make sure it works - and we've already formally tested it.
-     */
-    public function postNewExpenses(array $expenses)
-    {
-        foreach ($expenses as $expense) {
-            $crawler  = $this->jsonRequest('POST', '/api/v1/expenses', $expense);
-            $response = $this->client->getResponse();
-            $this->assertJsonResponse($response, $statusCode = 201);    // 201: 'Created'
-        }
-    }
-
-    public function filterSourceData()
-    {
-        return array(
-            [
-                'created_at'  => '2012-01-01',      // JAN 2012
-                'amount'      => '9.99',
-                'description' => 'description',
-                'comment'     => 'comment',
-            ],
-            [
-                'created_at'  => '2012-02-01',      // FEB 2012
-                'amount'      => '9.99',
-                'description' => 'description',
-                'comment'     => 'comment',
-            ]
-        );
+        // filterSourceData) that is within the date range - and not adding more
+        $data = $this->dataFromApi('GET', '/api/v1/expenses.json?startDate=2012-01-14&endDate=2012-01-15'); 
+        $this->assertGreaterThanOrEqual(1, $data);
     }
 
     public function dataFromApi($method, $url)

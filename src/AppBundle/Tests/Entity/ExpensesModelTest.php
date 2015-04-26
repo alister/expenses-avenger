@@ -86,7 +86,7 @@ class ExpensesModelTest extends WebTestCase
              'a cooked breakfast'
          );
         $exp3 = $this->createExpense(
-            new DateTime('2015-04-14 11:18:01+0100'),
+            new DateTime('2015-04-21 11:18:01+0100'),
              '5.98', 
              'breakfast', 
              'out for a cooked breakfast'
@@ -122,9 +122,9 @@ class ExpensesModelTest extends WebTestCase
         $this->assertCount(2, $filtered);
 
         // filter down to a specific week
-        $startDate = new DateTime('2015-04-13'); // Mon 13th Apr to...
-        $endDate = new DateTime('2015-04-19'); //   Sun 19th Apr inclusive
+        $startDate = new DateTime('2015-04-20'); // Mon 13th Apr to...
+        $endDate = new DateTime('2015-04-26'); //   Sun 19th Apr inclusive
         $filtered = $this->expenseRepo->fetchByDate($this->u, $startDate, $endDate);
-        $this->assertCount(1, $filtered);
+        $this->assertCount(2, $filtered);
     }
 }

@@ -13,17 +13,11 @@ date
 
 mkdir -p ./build/logs ./build/coverage/ #./logs/ ./tmp/
 
-TEST="$@"
-if [ -z "$TEST" ]; then
-    # no tests given, go test the biggest set
-    TEST="./tests"
-fi
-
-VERBOSE="--verbose  "   # --debug --testdox
+VERBOSE="--verbose "   # --testdox --debug
 #COVERAGE="--coverage-html=build/coverage"
 COLORS="--colors"
 # config run by default, includes bootstrap
-#CONF="--configuration ./phpunit.xml  -d memory_limit=1024M"
+CONF="--configuration app/phpunit.xml.dist  -d memory_limit=1024M"
 # Setting exclude-group here overrides the config
 #GROUP=" --group __nogroup__"
 #GROUP=" --group only"
