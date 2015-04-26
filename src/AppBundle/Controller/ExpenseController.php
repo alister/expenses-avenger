@@ -65,6 +65,38 @@ class ExpenseController extends FOSRestController
         return new ExpenseCollection($expenses, $offset, $limit);
     }
 
+
+    /**
+     * List all expenses.
+     *
+     * @ApiDoc(
+     *   resource = true,
+     *   statusCodes = {
+     *     200 = "Returned when successful"
+     *   }
+     * )
+     *
+    * @Annotations\View()
+     *
+     * @param Request               $request      the request object
+     * @param ParamFetcherInterface $paramFetcher param fetcher service
+     *
+     * @return array
+     */
+    public function getSummaryAction(Request $request, ParamFetcherInterface $paramFetcher)
+    {
+        //$expenses = $this->getExpenseManager()->fetchFiltered($paramFetcher->all());
+        $expenses = [
+            [   'weekStart' => '2015-04-13',
+                'total'     => 22,
+                'avgDay'    => 22,
+            ],
+            #[],
+            #[],
+        ];
+        return $expenses;
+    }
+
     public function testExpenses()
     {
         $this->user = new User();

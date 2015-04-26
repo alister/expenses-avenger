@@ -17,7 +17,7 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootst
                 templateUrl: 'views/list.html'
             })
             .when('/expense/weekly-summary', {
-                controller: 'ListController',
+                controller: 'SummaryController',
                 templateUrl: 'views/weekly-summary.html'
             })
             .when('/expense/new', {
@@ -51,10 +51,20 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootst
     });
 angular.module('ExpensesApp')
     .factory('Expense', function ($resource) {
-        return $resource('http://nas.abulman.co.uk:8000/app_dev.php/api/v1/expenses/:id.json', { id: '@id' }, {
-            'update':  { method: 'PUT', isArray: true },
-            'get':     { method: 'GET' },
-            'options': {/*method: 'GET'*/ }
-        });
+        return $resource('/api/v1/expenses/:id.json',  //http://nas.abulman.co.uk:8000/app_dev.php
+            {  id: '@id' },
+            {
+                'update':      { method: 'PUT', isArray: true },
+                'get':         { method: 'GET' },
+                'options':     {/*method: 'GET'*/ }
+            }
+        );
+
     })
+    .factory('WeeklySpend', function ($resource) {
+        return $resource('/api/v1/summary.json', 
+            {  id: '@id' },
+            {}
+        );
+    });
 ;

@@ -1,23 +1,20 @@
-<table class='table table-hover table-bordered' ng-model='weekly-summary'>
+<p><input type='search' class='form-control' placeholder='Search' ng-model="query"/></p>
+
+<table class='table table-hover table-bordered' ng-model='weeklySummary'>
     <thead>
         <tr>
-            <td>Length: 'expenses' *{{expenses.length}}*, params: {{paramsObj}}</td>
-        </tr>
-        <tr>
-            <th ng-repeat='field in fields' ng-click='sort(field)'>
-                {{ fieldNames[$index] }}
-                <span ng-show='sort.field === field  && !sort.order' class='glyphicon glyphicon-chevron-down'></span>
-                <span ng-show='sort.field === field  && sort.order' class='glyphicon glyphicon-chevron-up'></span>
-            </th>
+            <td>Week Beginning</td>
+            <td>Total Spent</td>
+            <td>Average spent per day</td>             
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat='expense in expenses | filter: query | orderBy: sort.field : sort.order'>
-            <td>{{ expense.created_at|date }}</td>
-            <td>{{ expense.amount|currency }}</td>
-            <td>{{ expense.description }}</td>
-            <td>{{ expense.comment }}</td>
-            <td><a ng-click='show(expense.id)' class="btn btn-default btn-xs">Edit</a></td>
+        <!-- <tr><td colspan="3">{{weeklySpend}}, {{weeklySummary}}</td></tr> -->
+
+        <tr ng-repeat='spend in weeklySpend | filter: query | orderBy: sort.field : sort.order'>
+            <td>{{ spend.weekStart|date }}</td>
+            <td>{{ spend.total|currency }}</td>
+            <td>{{ spend.avgDay|currency  }}</td>
         </tr>
     </tbody>
 </table>

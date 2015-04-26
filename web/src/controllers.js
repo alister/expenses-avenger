@@ -1,6 +1,6 @@
 angular.module('ExpensesApp')
-    .controller('ListController', ['$scope', 'Expense', '$location', '$filter', '$routeParams', 'options', 
-        function($scope, Expense, $location, $filter, $routeParams, ngCurrency, options) {  //, 
+    .controller('ListController', ['$scope', 'Expense', 'WeeklySpend', '$location', '$filter', '$routeParams', 'options', 
+        function($scope, Expense, WeeklySpend, $location, $filter, $routeParams, ngCurrency, options) {  //, 
 
             $scope.fields = ['created_at', 'amount', 'description', 'comment'];
             $scope.fieldNames = ['Date', 'Amount', 'Description', 'Comment'];
@@ -16,91 +16,28 @@ angular.module('ExpensesApp')
                 $location.url('/expense/' + id);
             };
             $scope.loadAll = function() {
+                console.log('Load all.');
                 Expense.query({}, function(expenses) {
                     $scope.expenses = expenses;
                 });
             };
             $scope.loadAll();
     }])
-
-    .controller('Never2Controller', ['$scope', 'Expense', '$location', '$filter', '$routeParams', 'options', 
-        function($scope, Expense, $location, $filter, $routeParams, options) {  //, 
-            console.log('Running ListController');
-            //$scope.paramsObj= {};
-
-            if (! $scope.expenses) {
-                console.log('call loadAll, 13');
-            }
-
-            $scope.list = function() {
-                console.log('fetch data from API, params:');
-                console.log($scope.paramsObj);
-                Expense.query($scope.paramsObj, function(data) {
-                    console.log('Got Data:');
-                    console.log(data);
-                    $scope.expenses = data;
+    .controller('SummaryController', ['$scope', 'WeeklySpend', '$location',
+        function ($scope, WeeklySpend, $location) {
+            $scope.weeklySummary = function() {
+                console.log('call weeklySummary');
+                WeeklySpend.query({}, function(data) {
+                    $scope.weeklySpend = data;
                 }, function() {
-                    console.log('Fetch fail. params:');
-                    console.log($scope.paramsObj);
+                    console.log('Fetch of weeklySpend failed.');
                 });
             }
-            // console.log('call getItems, params: ');
-            // console.log($scope.paramsObj);
-            //$scope.list();
+            //$scope.weeklySummary();
+            WeeklySpend.query({}, function(data) {
+                $scope.weeklySpend = data;
+            });
 
-            // filtering date page, sets $scope.paramsObj
-            $scope.activeDate;
-            $scope.selectedDates = [new Date().setHours(0, 0, 0, 0)];
-            $scope.type = 'range';
-            $scope.identity = angular.identity;
-            $scope.filterByTimestamps = function() {
-                var startDate = $filter('orderBy')($scope.selectedDates, '', false)[0];
-                var endDate   = $filter('orderBy')($scope.selectedDates, '', true)[0];
-                $scope.paramsObj = {};
-                $scope.paramsObj.startDate = moment(startDate);//.format('YYYY-MM-DD');
-                $scope.paramsObj.endDate = moment(endDate);//.format('YYYY-MM-DD');
-
-                // put the search filter into the URL, for the record
-                console.log('Set path with start/endDate');
-                console.log($scope.paramsObj);
-
-                console.log('fetch the filtered data from API, params:');
-                console.log($scope.paramsObj);
-                $scope.list($scope.paramsObj);
-
-                $location.path('/expenses').search('startDate', $scope.paramsObj.startDate)
-                    .search('endDate', $scope.paramsObj.endDate)
-                ;
-            }
-    }])
-    .controller('NeverController', ['$scope', 'Expense', '$location', '$filter', '$routeParams', 'options', 
-        function($scope, Expense, $location, $filter, $routeParams, options) {  //, 
-            var paramsObj = {};
-            if ($routeParams.startDate) {
-                console.log('update paramsObj.startDate');
-                $scope.paramsObj.startDate = $routeParams.startDate;
-            }
-            if ($routeParams.endDate) {
-                console.log('update paramsObj.endDate');
-                $scope.paramsObj.endDate = $routeParams.endDate;
-            }
-
-
-    
-
-            //$scope.expenses = Expense.query($scope.paramsObj);
-    
-            // // $scope.getAll = function() {
-            // //     Expense.query($scope.paramsObj, function($data){
-            // //         $scope.expenses = data;
-            // //     });
-            // // };
-
-    
-    
-            // $scope.removeFromSelected = function(dt) {
-            //     this.selectedDates.splice(this.selectedDates.indexOf(dt), 1);
-            // }
     }])
     .controller('NewController', ['$scope', '$rootScope', 'Expense', '$location',
         function ($scope, $rootScope, Expense, $location) {
