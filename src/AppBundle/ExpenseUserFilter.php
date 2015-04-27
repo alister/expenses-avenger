@@ -28,7 +28,6 @@ class ExpenseUserFilter extends SQLFilter
         }
 
         $query = sprintf('%s.%s = %s', $targetTableAlias, $fieldName, $userId);
-dump($query);
         return $query;
     }
 }
