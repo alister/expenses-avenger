@@ -7,8 +7,17 @@ parameters:
 services:
     app.expense_manager:
         class: 'AppBundle\ExpenseManager'
+        scope: request
         arguments:
-            - @app.repository.expense
+            - "@app.repository.expense"
+            - "@app.user"
+
+    app.user:
+        class: 'AppBundle\UserApp'
+        scope: request
+        arguments:
+            - 553e4bb6566ea
+            - "@request"
 
     ## Doctrine repositories
     app.repository.expense:
@@ -20,13 +29,15 @@ services:
         #calls:
         #    - [setContainer, [@service_container]]
 
-    appbundle.listener.before_controller:
-        class: AppBundle\EventListener\BeforeControllerListener
-        arguments: [ @security.context ]
-        #scope: request
+    app_demo.doctrine.filter.configurator:
+        class: AppBundle\FilterConfigurator
+        scope: request
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@request"
+            - "@app.user"
         tags:
-            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
-
+            - { name: kernel.event_listener, event: kernel.request }
 
     #service_name:
     #    class: AppBundle\Directory\ClassName

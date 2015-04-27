@@ -28,15 +28,12 @@ class Expense
     private $id;
 
     /**
-     * Bidirectional - Many Expenses are owned by one user (OWNING SIDE)
+     * userApp.io username of person that created this
      * 
-     * @var User
-     *
-     * @-ORM\ManyToOne(targetEntity="AppBundle\Entity\User", inversedBy="expensesOwned")
-     *
-     * @-Serializer\Expose
+     * @ORM\Column(name="user", type="string")
+     * @var string
      */
-    //private $user;   Until we get there, leave it
+    private $user;
 
     /**
      * Date of expense (input by user, default to today)
@@ -68,7 +65,6 @@ class Expense
      * 
      * Again, MySQL shouldn't have the problem.
      * 
-     * @-ORM\Column(name="amount", type="string")   SQLITE only
      * @ORM\Column(name="amount", type="decimal", precision=7, scale=2)
      * @Serializer\Expose
      */

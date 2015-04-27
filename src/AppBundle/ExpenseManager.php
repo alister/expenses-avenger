@@ -7,17 +7,23 @@ use AppBundle\Entity\Expense;
 
 class ExpenseManager
 {
+    private $repo;
+    private $userApp;
+
     /** @var array expenses */
     protected $data = array();
 
-    public function __construct(ExpenseRepository $repo)
+    private $userId;
+
+    public function __construct(ExpenseRepository $repo, UserAppInterface $userApp)
     {
-        $this->repo = $repo;
+        $this->repo    = $repo;
+        $this->userApp = $userApp;
     }
 
     public function calcSummary($params)
     {
-        return $this->repo->summaryByWeek();
+        return $this->repo->summaryByWeek($this->userApp->getUserId());
         //return $this->CalcSummaryTestData($params);
     }
 
@@ -54,7 +60,7 @@ class ExpenseManager
 
         // refactor with andX() if we add more filters
         if (isset($filterParams['startDate'], $filterParams['endDate'])) {
-            $query->where('(e.createdAt >= :startDate) AND (e.createdAt <= :endDate)')
+            $where = $query->where('(e.createdAt >= :startDate) AND (e.createdAt <= :endDate)')
                 ->setParameter('startDate', $filterParams['startDate'])
                 ->setParameter('endDate', $filterParams['endDate']);
         }
@@ -66,6 +72,7 @@ class ExpenseManager
         if (isset($filterParams['offset'])) {
             $query->setFirstResult($filterParams['offset']);
         }
+
         return $query->getQuery();
     }
 
@@ -86,63 +93,28 @@ class ExpenseManager
         );
 
         return $expensesOrdered;
-        $expenses = array();
-        foreach($expensesOrdered as $exp) {
-            $expenses[$exp->getId()] = $exp;
-        }
-        #dump($expenses);#die;
-
-        return $expenses;
     }
 
     public function get($id)
     {
         $expense = $this->repo->find($id);
+        //#dump($expense);
         return $expense;
-
-        if (!isset($this->data[$id])) {
-            return false;
-        }
-
-        return $this->data[$id];
     }
 
     public function set(Expense $expense)
     {
-        //#dump($expense);#die;
+        $expense->setUser($this->userApp->getUserId());
+        //#dump($expense);
         return $this->repo->save($expense);
-
-        if (null === $expense->getId()) {
-            if (empty($this->data)) {
-                $expense->setId(0);
-            } else {
-                end($this->data);
-                $expense->setId(key($this->data) + 1);
-            }
-        }
-
-        // if (null === $expense->secret) {
-        //    $expense->secret = base64_encode($this->randomGenerator->nextBytes(64));
-        // }
-
-        $this->data[$expense->getId()] = $expense;
     }
 
     public function remove($id)
     {
         $expense = $this->get($id);
-        #dump($id, $expense);die;
         if ($expense instanceof Expense) {
             $this->repo->remove($expense);
         }
         return;
-
-        if (!isset($this->data[$id])) {
-            return false;
-        }
-
-        unset($this->data[$id]);
-
-        return true;
     }
 }

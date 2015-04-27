@@ -32,6 +32,7 @@ class ExpenseRepository extends EntityRepository
         if (! in_array($order, ['ASC', 'DESC'])) {
             $order = 'DESC';
         }
+
         return $this->getEntityManager()->createQuery(
                 'SELECT e
                 FROM AppBundle:Expense e
@@ -45,26 +46,32 @@ class ExpenseRepository extends EntityRepository
             ->setParameter('startCreatedAt', $startDate)
             ->setParameter('endCreatedAt', $endDate)
             //#->setParameter('orderBy', $order)
-            ->getResult();
+        ;
+$query->getDql();die;
+        return $query->getResult();
     }
 
-    public function summaryByWeek()
+    public function summaryByWeek($userId)
     {
+        //#dump($userId);
         $conn = $this->getEntityManager()->getConnection();
-        $query = $conn->prepare(
+        $stmt = $conn->prepare(
             'SELECT 
-                -- YEARWEEK(createdAt) as yrWeek,
                 MIN(createdAt) as earliestDate,
                 MAX(createdAt) as latestDate,
-                COUNT(DATE(createdAt)) as numDaysSpent,
+                COUNT(DISTINCT DATE(createdAt)) as numDaysSpent,
                 SUM(amount) as totAmount,
                 AVG(amount) as avgAmount,
                 COUNT(id) as Qty
             FROM expenses
-            GROUP BY YEARWEEK(createdAt)'
+            WHERE user = :userId
+            GROUP BY YEARWEEK(createdAt), DATE(createdAt)
+            '
         );
-        $query->execute();
-        $results = $query->fetchAll();
+        $stmt->bindParam('userId', $userId);
+        $stmt->execute();
+        //#dump($stmt->getWrappedStatement());die;
+        $results = $stmt->fetchAll();
 
         $summary = [];
         foreach ($results as $weekSummary) {
@@ -76,34 +83,5 @@ class ExpenseRepository extends EntityRepository
             $summary[] = $week;
         }
         return $summary;
-#dump($results);die;
-
-        $x = $conn->executeUpdate(
-            
-        );
-
-        //$query->setParameter(1, 'romanb');
-        return $query->getResult();
-
-        $order = strtoupper($order);
-        // verify the only values allowed
-        if (! in_array($order, ['ASC', 'DESC'])) {
-            $order = 'DESC';
-        }
-
-        return createQuery(
-                'SELECT e
-                FROM AppBundle:Expense e
-                WHERE 
-                    e.createdAt >= :startCreatedAt AND 
-                    e.createdAt <= :endCreatedAt
-                ORDER BY e.createdAt ' . $order
-                    //e.user = :user AND 
-            )
-            //->setParameter('user', $user)
-            ->setParameter('startCreatedAt', $startDate)
-            ->setParameter('endCreatedAt', $endDate)
-            //#->setParameter('orderBy', $order)
-            ->getResult();
     }
 }

@@ -43,6 +43,9 @@ assetic:
         #yui_css:
         #    jar: "%kernel.root_dir%/Resources/java/yuicompressor-2.4.7.jar"
 
+parameters:
+    class.ExpenseUserFilter: AppBundle\ExpenseUserFilter
+
 # Doctrine Configuration
 doctrine:
     dbal:
@@ -63,6 +66,12 @@ doctrine:
     orm:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
+        # Register SQL Filters in the entity manager
+        filters:
+            # An array of filters
+            user_filter:
+                class:   %class.ExpenseUserFilter%
+                enabled: true
 
 # Swiftmailer Configuration
 # swiftmailer:

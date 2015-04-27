@@ -4,7 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Expense;
 use AppBundle\Entity\ExpenseCollection;
 use AppBundle\Form\ExpenseType;
-use AppBundle\InitializableControllerInterface;
+#use AppBundle\InitializableControllerInterface;
 use DateTime;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -21,44 +21,21 @@ use Symfony\Component\Security\Core\SecurityContextInterface;
 use UserApp\API;
 use UserApp\Exceptions\ServiceException;
 
-class ExpenseController extends FOSRestController  implements InitializableControllerInterface
+class ExpenseController extends FOSRestController
 {
-    private $userId;
-    private $api;
-
-    public function initialize(Request $request, SecurityContextInterface $security_context)
-    {
-        if (!$request->cookies->has('ua_session_token')) {
-            return;
-        }
-
-        $ua_session_token = $request->cookies->get('ua_session_token');
-        //dump($ua_session_token);
-
-        if (isset($ua_session_token)) {  //!User::authenticated() && 
-            try {
-                $this->api = new \UserApp\API("553e4bb6566ea", $ua_session_token);
-            } catch (ServiceException $exception) {
-                // Not authorized
-                $valid_token = false;
-                throw new AccessDeniedHttpException('Not logged in');
-            }
-        }
-        // Authorized
-        $this->userId = $this->api->user->get();
-        if (! $this->userId) {
-            throw new AccessDeniedHttpException('Unknown user');
-        }
-        //#dump($this->userId);
-    }
-
-
     /**
      * return \AppBundle\ExpenseManager
      */
     public function getExpenseManager()
     {
         return $this->get('app.expense_manager');
+
+        static $expense_manager = null;
+        if (! $expense_manager) {
+            $expense_manager = $this->get('app.expense_manager');
+            $expense_manager->setUserId($this->userId);
+        }
+        return $expense_manager;
     }
 
     /**
@@ -96,8 +73,6 @@ class ExpenseController extends FOSRestController  implements InitializableContr
         //#$expenses = $this->testExpenses();
 
         return $expenses;
-        return ['data' => ['expenses' => $expenses]];
-        return new ExpenseCollection($expenses, $offset, $limit);
     }
 
     /**
@@ -110,7 +85,7 @@ class ExpenseController extends FOSRestController  implements InitializableContr
      *   }
      * )
      *
-    * @Annotations\View()
+     * @Annotations\View()
      *
      * @param Request               $request      the request object
      * @param ParamFetcherInterface $paramFetcher param fetcher service
@@ -121,7 +96,8 @@ class ExpenseController extends FOSRestController  implements InitializableContr
      */
     public function getSummaryAction(Request $request, ParamFetcherInterface $paramFetcher)
     {
-        $expenses = $this->getExpenseManager()->calcSummary($paramFetcher->all());
+        $params = $paramFetcher->all();
+        $expenses = $this->getExpenseManager()->calcSummary($params);
         return $expenses;
     }
 
@@ -183,6 +159,8 @@ class ExpenseController extends FOSRestController  implements InitializableContr
      */
     public function getExpenseAction(Request $request, $id)
     {
+        $params = [];
+
         $expense = $this->getExpenseManager()->get($id);
         if (!$expense) {
             throw $this->createNotFoundException("Expense does not exist.");
@@ -237,8 +215,10 @@ class ExpenseController extends FOSRestController  implements InitializableContr
      */
     public function postExpensesAction(Request $request)
     {
+        $userApp = $this->get('app.user');
         $expense = new Expense();
-        //$this->handleExpensesData($request, $expense);
+        $expense->setUser($userApp->getUserId());
+
         $e = $this->get('request')->request->all();
         $dateName = 'created_at';
 
@@ -362,6 +342,8 @@ class ExpenseController extends FOSRestController  implements InitializableContr
         if (isset($e['comment'])) {
             $expense->setComment($e['comment']);
         }
+        $userApp = $this->get('app.user');
+        $expense->setUser($userApp->getUserId());
 
         $this->getExpenseManager()->set($expense);
         return $this->routeRedirectView('get_expense', array('id' => $expense->getId()), $statusCode);
