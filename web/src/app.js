@@ -1,4 +1,4 @@
-angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootstrap', 'gm.datepickerMultiSelect', 'ng-currency']) //
+angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootstrap', 'ng-currency', 'datePicker']) // 'gm.datepickerMultiSelect', 
     .config(['$httpProvider', '$routeProvider', '$locationProvider', function ($httpProvider, $routeProvider, $locationProvider) {
         $routeProvider
             .when('/expenses', {

@@ -2,15 +2,18 @@
     <h2>New Expense</h2>
     
     <form class="form-horizontal"  name='newExpense' role="form">
+
         <div class="form-group" ng-form="created_at" ng-class="{ 'has-error': created_at.$dirty && created_at.$invalid }" record="expense" field="created_at">
             <label class="col-sm-2 control-label" for="created_at">Date of expense <span>*</span></label>
-            <input type="date" ng-model="expense.created_at" id="created_at" ng-required="true">
+            <input type="datetime" date-time ng-model="expense.created_at" id="created_at" ng-required="true" auto-close="true">
         </div>
+
         <div class="form-group" ng-form="amount" ng-class="{ 'has-error': amount.$dirty && amount.$invalid }" record="expense" field="amount" required>
             <label class="col-sm-2 control-label" for="amount">Amount <span>*</span></label>
             <input type="text" ng-model="expense.amount" id="amount" ng-required="true" min="0.01" max="999.99" step="0.01" ng-currency>
             <p class="help-block" ng-if="amount.$dirty && amount.$invalid">Maximum allowed expense is $999.99 on this system.</p>
         </div>
+
         <div class="form-group" ng-form="description" ng-class="{ 'has-error': description.$dirty && description.$invalid }" record="expense" field="description" required>
             <label class="col-sm-2 control-label" for="description">Description <span>*</span></label>
             <input type="text" ng-model="expense.description" name="description" ng-required="true">

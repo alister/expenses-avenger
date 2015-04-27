@@ -1,13 +1,12 @@
 <div class="col-md-10 offset-2" ng-model="expense">
 
     <h2>Editing '{{expense.description}}', from {{expense.created_at|date}}</h2>
- <!--<h6>single</h6> -->
 
     <form name='editExpense' class='form-horizontal'>
 
         <div class="form-group" ng-form="created_at" ng-class="{ 'has-error': created_at.$dirty && created_at.$invalid }" record="expense" field="created_at">
             <label class="col-sm-2 control-label" for="created_at">Date of expense <span>*</span></label>
-            <input type="date" ng-model="expense.created_at" ng-required="true" min="2015-01-01">   <!-- name="created_at" placeholder="yyyy-mm-dd" -->
+            <input type="datetime" date-time ng-model="expense.created_at" id="created_at" ng-required="true" auto-close="true">
         </div>
 
         <div class="form-group" ng-form="amount" ng-class="{ 'has-error': amount.$dirty && amount.$invalid }" record="expense" field="amount">
