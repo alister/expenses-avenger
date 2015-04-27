@@ -37,7 +37,7 @@ class ExpenseControllerTest extends WebTestCase
     public function testPost()
     {
         $data =  [
-            'created_at'  => '2015-04-01',
+            'created_at'  => '2015-04-01T09:30:00+0100',
             'amount'      => '9.99',
             'description' => 'description',
             'comment'     => 'comment',

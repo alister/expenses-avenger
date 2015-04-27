@@ -45,7 +45,7 @@ class Expense
      *
      * @ORM\Column(name="createdAt", type="datetime")
      * @Serializer\Expose
-     * @Serializer\Type("DateTime<'Y-m-d'>")
+     * @Serializer\Type("DateTime")
      */
     private $createdAt;
 

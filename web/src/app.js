@@ -1,16 +1,5 @@
 angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootstrap', 'gm.datepickerMultiSelect', 'ng-currency']) //
     .config(['$httpProvider', '$routeProvider', '$locationProvider', function ($httpProvider, $routeProvider, $locationProvider) {
-        
-        // $httpProvider.defaults.transformRequest = function (data) {
-        //     var str = [];
-        //     for (var p in data) {
-        //         data[p] !== undefined && str.push(encodeURIComponent(p) + '=' + encodeURIComponent(data[p]));
-        //     }
-        //     return str.join('&');
-        // };
-        // $httpProvider.defaults.headers.put['Content-Type'] = $httpProvider.defaults.headers.post['Content-Type'] =
-        //     'application/x-www-form-urlencoded; charset=UTF-8';
-
         $routeProvider
             .when('/expenses', {
                 controller: 'ListController',

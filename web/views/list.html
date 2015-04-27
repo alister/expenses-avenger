@@ -13,7 +13,7 @@
     </thead>
     <tbody>
         <tr ng-repeat='expense in expenses | filter: query | orderBy: sort.field : sort.order'>
-            <td>{{ expense.created_at|date }}</td>
+            <td>{{ expense.created_at|date : 'medium' }}</td>
             <td>{{ expense.amount|currency }}</td>
             <td>{{ expense.description }}</td>
             <td>{{ expense.comment }}</td>
