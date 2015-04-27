@@ -20,6 +20,14 @@ services:
         #calls:
         #    - [setContainer, [@service_container]]
 
+    appbundle.listener.before_controller:
+        class: AppBundle\EventListener\BeforeControllerListener
+        arguments: [ @security.context ]
+        #scope: request
+        tags:
+            - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
+
+
     #service_name:
     #    class: AppBundle\Directory\ClassName
     #    arguments: ["@another_service_name", "plain_value", "%parameter_name%"]

@@ -43,12 +43,13 @@ trait Database
     {
         #var_dump($table->getHash());echo "\n",__METHOD__,':',__LINE__,"\n";die;
         foreach ($table->getHash() as $hash) {
-            $this->createUser($hash);
+            #$this->createUser($hash);
         }
     }
 
     public function createUser(array $hash)
     {
+        return null;
         $userManager = $this->getContainer()->get('fos_user.user_manager');
         $user = $userManager->createUser();
 

@@ -65,12 +65,12 @@ doctrine:
         auto_mapping: true
 
 # Swiftmailer Configuration
-swiftmailer:
-    transport: "%mailer_transport%"
-    host:      "%mailer_host%"
-    username:  "%mailer_user%"
-    password:  "%mailer_password%"
-    spool:     { type: memory }
+# swiftmailer:
+#     transport: "%mailer_transport%"
+#     host:      "%mailer_host%"
+#     username:  "%mailer_user%"
+#     password:  "%mailer_password%"
+#     spool:     { type: memory }
 
 fos_rest:
     param_fetcher_listener: true
@@ -100,13 +100,13 @@ jms_serializer:
         debug: true
         auto_detection: true
         directories:
-            FOSUserBundle:
-                namespace_prefix: FOS\UserBundle
-                path: %kernel.root_dir%/config/serializer/FOSUB
+            # FOSUserBundle:
+            #     namespace_prefix: FOS\UserBundle
+            #     path: %kernel.root_dir%/config/serializer/FOSUB
 
 nelmio_api_doc: ~
 
-fos_user:
-    db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
-    firewall_name: main
-    user_class: AppBundle\Entity\User
+# fos_user:
+#     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
+#     firewall_name: main
+#     user_class: AppBundle\Entity\User

@@ -27,7 +27,8 @@
         ,"gedmo/doctrine-extensions": "dev-master"
         ,"friendsofsymfony/user-bundle": "~2.0@dev"
         ,"doctrine/doctrine-fixtures-bundle": "~2.2"
-        ,"nesbot/carbon": "~1.18"
+        ,"nesbot/carbon": "~1.18",
+        "userapp/userapp": "~1.2"
     },
     "require-dev": {
         "mockery/mockery": "0.9.*"

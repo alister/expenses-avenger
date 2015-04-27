@@ -3,8 +3,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Expense;
 use AppBundle\Entity\ExpenseCollection;
-use AppBundle\Entity\User;
 use AppBundle\Form\ExpenseType;
+use AppBundle\InitializableControllerInterface;
 use DateTime;
 use FOS\RestBundle\Controller\Annotations;
 use FOS\RestBundle\Controller\FOSRestController;
@@ -15,10 +15,44 @@ use FOS\RestBundle\View\View;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\SecurityContextInterface;
+use UserApp\API;
+use UserApp\Exceptions\ServiceException;
 
-class ExpenseController extends FOSRestController
+class ExpenseController extends FOSRestController  implements InitializableControllerInterface
 {
+    private $userId;
+    private $api;
+
+    public function initialize(Request $request, SecurityContextInterface $security_context)
+    {
+        if (!$request->cookies->has('ua_session_token')) {
+            return;
+        }
+
+        $ua_session_token = $request->cookies->get('ua_session_token');
+        //dump($ua_session_token);
+
+        if (isset($ua_session_token)) {  //!User::authenticated() && 
+            try {
+                $this->api = new \UserApp\API("553e4bb6566ea", $ua_session_token);
+            } catch (ServiceException $exception) {
+                // Not authorized
+                $valid_token = false;
+                throw new AccessDeniedHttpException('Not logged in');
+            }
+        }
+        // Authorized
+        $this->userId = $this->api->user->get();
+        if (! $this->userId) {
+            throw new AccessDeniedHttpException('Unknown user');
+        }
+        //#dump($this->userId);
+    }
+
+
     /**
      * return \AppBundle\ExpenseManager
      */

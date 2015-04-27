@@ -12,8 +12,12 @@ security:
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username
+        in_memory:
+            memory:
+                users:
+                    admin:
+                        password: kitten
+                        roles: 'ROLE_ADMIN'
 
     # the main part of the security, where you can set up firewalls
     # for specific sections of your app
@@ -29,9 +33,9 @@ security:
 
         main:
             pattern: ^/
-            form_login:
-                provider: fos_userbundle
-                csrf_provider: form.csrf_provider
+            form_login: ~
+                # provider: fos_userbundle
+                # csrf_provider: form.csrf_provider
             logout:       true
             anonymous:    true
 
