@@ -5,7 +5,7 @@ expense:
         _controller: FrameworkBundle:Template:template
         template:    "::index.html.twig"
 expense_anything:
-    path: /expenses/{anything}
+    path: /expense/{anything}
     defaults:
         _controller: FrameworkBundle:Template:template
         template:    "::index.html.twig"
