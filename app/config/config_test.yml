@@ -1,5 +1,9 @@
 imports:
     - { resource: config_dev.yml }
+    - { resource: services_test.yml }
+
+parameters:
+    class.ExpenseUserFilter: AppBundle\ExpenseUserFilterForTest
 
 framework:
     test: ~

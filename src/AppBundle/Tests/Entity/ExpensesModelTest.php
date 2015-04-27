@@ -12,7 +12,7 @@ class ExpensesModelTest extends WebTestCase
     /** @var Expense */
     protected $e;
 
-    /** @var Users */
+    /** @var string */
     protected $u;
 
     protected function setUp()
@@ -21,26 +21,17 @@ class ExpensesModelTest extends WebTestCase
         $this->container = $client->getContainer();
         $this->em = $this->container->get('doctrine.orm.entity_manager');
 
-        $this->em->createQuery('DELETE FROM AppBundle:User')->execute();
+        #$this->em->createQuery('DELETE FROM AppBundle:User')->execute();
         $this->em->createQuery('DELETE FROM AppBundle:Expense')->execute();
 
         $this->expenseRepo = $this->em->getRepository('AppBundle:Expense');
-        $this->u = new User;
-        $this->u->setUsername('username')
-            ->setPlainPassword('password')
-            ->setEmail('email@example.org')
-            ->setEnabled(true)
-            ->setRoles(['role'])
-        ;
+        $this->u = "test-user";     // also in AppBundle\UserAppForTesting
     }
 
     public function testClassSanity()
     {
         $e = new Expense;
         $this->assertInstanceOf('AppBundle\Entity\Expense', $e);
-
-        $this->assertInstanceOf('AppBundle\Entity\User', $this->u);
-        //#$this->assertInstanceOf('Doctrine\ORM\EntityManager', $this->em);
     }
 
     public function createExpense(DateTime $date, $amount, $desc, $comment)
@@ -92,39 +83,5 @@ class ExpensesModelTest extends WebTestCase
              'out for a cooked breakfast'
          );
         return [$exp1, $exp2, $exp3, ];
-    }
-
-    /**
-     * the big one. Take the pre-generated user and add multiple expenses
-     * 
-     * Then it, with the expenses are saved to the DB and read back, filtered
-     * by date.
-     */
-    public function testGenerateUserAndExpenses()
-    {
-        $testExp = $this->expensesSource();
-        $this->assertCount(3, $testExp);
-        $this->u->addExpense($testExp[0]);
-        $this->u->addExpense($testExp[1]);
-        $this->u->addExpense($testExp[2]);
-
-        // we put in three
-        $this->assertCount(3, $this->u->getExpenses());
-        $this->assertContains($testExp[2], $this->u->getExpenses());
-
-        $this->em->persist($this->u);
-        $this->em->flush();
-
-        // now filtered by date - only 2 of the above 'expN' are in 2015
-        $startDate = new DateTime('2015-01-01');
-        $endDate = new DateTime();
-        $filtered = $this->expenseRepo->fetchByDate($this->u, $startDate, $endDate);
-        $this->assertCount(2, $filtered);
-
-        // filter down to a specific week
-        $startDate = new DateTime('2015-04-20'); // Mon 13th Apr to...
-        $endDate = new DateTime('2015-04-26'); //   Sun 19th Apr inclusive
-        $filtered = $this->expenseRepo->fetchByDate($this->u, $startDate, $endDate);
-        $this->assertCount(2, $filtered);
     }
 }

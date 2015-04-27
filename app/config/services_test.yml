@@ -1,0 +1,9 @@
+services:
+    app.user:
+        class: 'AppBundle\UserAppForTesting'
+
+    app.expense_manager:
+        class: 'AppBundle\ExpenseManager'
+        arguments:
+            - "@app.repository.expense"
+            - "@app.user"

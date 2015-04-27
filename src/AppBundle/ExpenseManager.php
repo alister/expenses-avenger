@@ -80,11 +80,17 @@ class ExpenseManager
     {
         $query = $this->buildFilterQuery($filterParams);
         $x = $query->getResult();
+        //#dump($filterParams);
+        //#dump($query->getDql());
+        //#dump($query->getParameters());
+        //#dump($x);
         return $x;
     }
 
     public function fetch($start = 0, $limit = 25, $filterParams = [])
     {
+echo "\n",__METHOD__,':',__LINE__,"\n";die;
+dump($filterParams);die;
         $expensesOrdered = $this->repo->findBy(
             $filterParams,
             array('createdAt' => 'DESC'),
