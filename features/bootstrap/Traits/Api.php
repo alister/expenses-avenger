@@ -97,7 +97,7 @@ trait Api
         } else {
             throw new Exception("Unknown format to confirm");
         }
-
+        //#dump($data, $this->response);
         if (empty($data)) {
             throw new \Exception("Response was bad");
         }

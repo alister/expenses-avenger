@@ -9,7 +9,6 @@ use Behat\Symfony2Extension\Context\KernelDictionary;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Session\Session;
 use AppBundle\Entity\Expense;
-use AppBundle\Entity\User;
 
 /**
  * Using tests (traits) for getting and checking websites from full URLs and
@@ -28,8 +27,6 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
     /**
      * Initializes context. Every scenario gets its own context object.
      *
-     * @param ContractorRepository $contractor_repo [description]
-     * @param UserManager          $user_manager    [description]
      */
     public function __construct(
         $baseUrl = '',
@@ -80,7 +77,6 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
     public function TheseExpensesExist(TableNode $table)
     {
         // get any fully persisted user
-        $user = $this->em->getRepository('AppBundle:User')->findOneBy([]);
 
         foreach ($table->getHash() as $hash) {
             $line = new Expense();
@@ -91,7 +87,7 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
                 $line->$setter($val);
             }
 
-            $line->setUser($user);
+            $line->setUser('test-user');
             $this->em->persist($line);
             $this->expenses[] = $line;
         }
@@ -104,6 +100,7 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
     public function iCallTheApiRouteForRecord($route, $id)
     {
         $url = $this->getService('router')->generate($route, ['_format'=>'json', 'id'=> $id]);
+dump($url);
         return $this->iCallTheApiUrl($url);
     }
 
@@ -112,8 +109,11 @@ class ApiContext extends RawMinkContext implements Context, KernelAwareContext, 
      */
     public function theResponseShouldHaveAField($fieldname)
     {
+dump($fieldname);die;
         $fieldname = $this->mapFieldNameToProperty($fieldname);
+dump($fieldname, $this->response);die;
         $line = json_decode($this->response);
+dump($line);die;
         assertThat($line, set($fieldname));
     }
 
