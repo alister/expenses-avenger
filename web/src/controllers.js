@@ -55,12 +55,7 @@ angular.module('ExpensesApp')
                 //console.log(weekSummary);
                 //console.log(weekSummary.earliestDate);
                 //console.log(weekSummary.latestDate);
-                Expense.query({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate}, function(expenses) {
-                    $scope.expenses = expenses;
-                    //console.log('Expense.query()');
-                    //console.log(expenses);
-                    $location.path('/expenses').search({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate});
-                });
+                $location.path('/expenses').search({'startDate': weekSummary.earliestDate, 'endDate': weekSummary.latestDate});
             };
 
             //$scope.weeklySummary();
