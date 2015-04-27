@@ -78,7 +78,6 @@ class ExpenseManager
 
     public function fetch($start = 0, $limit = 25, $filterParams = [])
     {
-        #$expenses = $this->repo->findAll();
         $expensesOrdered = $this->repo->findBy(
             $filterParams,
             array('createdAt' => 'DESC'),

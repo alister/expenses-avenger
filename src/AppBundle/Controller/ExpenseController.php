@@ -207,8 +207,12 @@ class ExpenseController extends FOSRestController
         //$this->handleExpensesData($request, $expense);
         $e = $this->get('request')->request->all();
         $dateName = 'created_at';
-        if (!isset($e[$dateName], $e['amount'], $e['description'], $e['comment'])) {
+
+        if (!isset($e[$dateName], $e['amount'], $e['description'])) {
             throw new \Exception("Error Processing Request");
+        }
+        if (!isset($e['comment'])) {
+            $e['comment'] = '';
         }
         $expense->setcreatedAt($e[$dateName]);
         $expense->setDescription($e['description']);
