@@ -22,12 +22,17 @@ class UserApp implements UserAppInterface
             return $this->userId;
         }
 
+        $controller = $this->request->attributes->get('_controller');
+        if ($controller === "Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction") {
+            // we don't need authentication outside the API
+            return false;
+        }
+
         if (!$this->request->cookies->has('ua_session_token')) {
             return false;
         }
 
         $ua_session_token = $this->request->cookies->get('ua_session_token');
-        //dump($ua_session_token);
 
         if (isset($ua_session_token)) {  //!User::authenticated() &&
             try {
