@@ -65,7 +65,7 @@ $query->getDql();die;
                 COUNT(id) as Qty
             FROM expenses
             WHERE user = :userId
-            GROUP BY YEARWEEK(createdAt), DATE(createdAt)
+            GROUP BY YEARWEEK(createdAt)
             '
         );
         $stmt->bindParam('userId', $userId);

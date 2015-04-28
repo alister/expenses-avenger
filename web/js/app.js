@@ -44,22 +44,22 @@ angular.module('ExpensesApp', ['ngRoute', 'ngResource', 'ngMessages', 'ui.bootst
         user.init({ appId: '553e4bb6566ea' });
     }]);
 angular.module('ExpensesApp')
-    .factory('Expense', function ($resource) {
-        return $resource('/api/v1/expenses/:id.json',  //http://nas.abulman.co.uk:8000/app_dev.php
-            {
-                id: '@id'
-            },
-            {
-                'update':      { method: 'PUT', isArray: true },
-                'get':         { method: 'GET' },
-                'options':     {/*method: 'GET'*/ }
-            }
-        );
-    })
-    .factory('WeeklySpend', function ($resource) {
+    .factory('Expense', ['$resource', function ($resource) {
+            return $resource('/api/v1/expenses/:id.json',  //http://nas.abulman.co.uk:8000/app_dev.php
+                {
+                    id: '@id'
+                },
+                {
+                    'update':      { method: 'PUT', isArray: true },
+                    'get':         { method: 'GET' },
+                    'options':     {/*method: 'GET'*/ }
+                }
+            );
+        }])
+    .factory('WeeklySpend', ['$resource', function ($resource) {
         return $resource('/api/v1/summary.json', 
             {  id: '@id' },
             {}
         );
-    });
+    }])
 ;

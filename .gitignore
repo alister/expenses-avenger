@@ -14,9 +14,8 @@
 # build artifacts
 cache.properties
 build/
-web/css/
-web/js/
-
+node_modules/
+web/bower_components/
 b
 bp
 
