@@ -1,16 +1,12 @@
 # Write a simple expenses tracker web application
 
-## Introduction
-
-Test project for the final step of TopTal interview process.
-
 ### front-end
 
 Angular
 
 ### Symfony v2.6.6 - backed API.
 
-2.6.6 is the latest stable version of Symfony.
+2.6.6 is the latest stable version of Symfony. (as of April 28th, 2015)
 
 ## Requirements
 
